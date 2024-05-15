@@ -1,0 +1,39 @@
+QFrame {
+/*    background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,*/
+/*                                    stop: 0 #AAB3F1, stop: 1 #FADEB7);*/
+    border: 1px solid #888;
+    border-radius:15px;
+/*    background-color: qlineargradient(spread:repeat, x1:0, y1:0, x2:1, y2:1,*/
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                                        stop:0.102273 #d489ff,
+/*                                        stop:0.5 #7985ff,*/
+                                        stop:0.926136 #6ad8fd);
+}
+/*QLabel {*/
+/*    color: #000000;*/
+/*    font-size: 22px;*/
+/*    font-weight: bold;*/
+/*    font-family: "Segoe UI";*/
+/*    border:none;*/
+/*    background-color: none;*/
+/*}*/
+QLabel {
+    border:none;
+    background-color: none;
+
+    font-weight: bold;      /*加粗;*/
+    font-family: "Segoe UI";
+}
+QLabel#label_value {
+    color: rgba(255, 255, 255, 255); /*#000000;*/
+    font-size: 30px;
+}
+QLabel#label_text {
+    color: rgba(255, 255, 255, 255);
+    font-size: 13px;
+    font-style: italic;
+}
+
+/*    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,*/
+/*                                        stop:0.102273 rgba(239, 153, 153, 200),*/
+/*                                        stop:0.926136 rgba(120, 95, 226, 200));*/

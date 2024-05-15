@@ -1,0 +1,19 @@
+{
+  "name": "vg_sys",
+  "version": "1.0.0",
+  "description": "",
+
+  "pc_start_run_app": false,
+  "theme_color": "",
+
+  "video_url" : "",
+
+  "port_number" : "",
+
+  "database_username" : "",
+  "database_password" : "",
+  "database_name" : "",
+  "database_host" : "",
+
+  "private": true
+}

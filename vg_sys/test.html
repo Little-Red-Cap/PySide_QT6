@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, viewport-fit=cover">
+    <title>Title</title>
+
+<!--    <script type="text/javascript" src="./qwebchannel.js"></script>-->
+    <script type="text/javascript">
+        //C++ 调用showalert函数
+        function showalert(text) {
+            alert(text)
+        }
+
+        function getJsData() {
+            return "C++ Call JS demo"
+        }
+
+        var nativeObj //全局变量
+        //第一个参数是QtWebEngine 挂载到前端全局环境中的 window.qt.webChannelTransport
+        new QWebChannel(qt.webChannelTransport, function (channel) {
+
+            nativeObj = channel.objects.nativeObj //C++ 注册的对象名称为nativeObj，所以channel.objects后面的名字是nativeObj
+            //连接WebObject类的nativeTextChanged信号
+            nativeObj.nativeTextChanged.connect(function (text) {
+                alert("nativeTextChanged: " + text)
+            })
+        })
+
+        // 在网页端调用C++函数
+        function jsCallCpp() {
+            //调用WebObject类的setNativeText函数
+            nativeObj.setNativeText("JS Call C++ test ")
+        }
+
+        function getNativeText() {
+            //调用WebObject类的nativeText函数,获取属性值
+            alert("new nativeText is: " + nativeObj.nativeText)
+        }
+    </script>
+</head>
+<body>
+<p>
+    QWebEngineTest
+    <button onclick="jsCallCpp()">调用C++对象的函数setNativeText</button>
+    <button onclick="getNativeText()">获取C++对象属性nativeText</button>
+</p>
+</body>
+</html>
