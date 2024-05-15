@@ -17,7 +17,6 @@ from part_switch_button import *
 # from bottle import Bottle, run
 # import pyqtgraph as pg
 
-
 from py_gf.render_svg_to_pixmap import gf_to_icon
 from ui.ui_page_chart import *
 from ui.ui_page_setting import *
@@ -513,7 +512,7 @@ class GlobalData:
         pass
 
 
-class PageDataView(QFrame):
+class PageDataView(QWidget):
     def __init__(self):
         super().__init__()
         # self.chart = PartChart()
@@ -535,11 +534,11 @@ class PageDataView(QFrame):
         # self.data_view.graphicsView_h.setChart(SinWaveChart())
 
         with open('theme/BaseFrame.qss', 'r') as file:
-            self.setStyleSheet(file.read())
-            # self.settings.horizontalLayout.setStyleSheet(file.read())
-            # self.settings.frame.setStyleSheet(file.read())
+            style_sheet = file.read()
+            # self.setStyleSheet(style_sheet)
+            self.data_view.widget_2.setStyleSheet(style_sheet)
+            self.data_view.widget.setStyleSheet(style_sheet)
 
-        # 创建一个QTimer并设置其间隔（以毫秒为单位）
         self.timer = QTimer(self)
         self.timer.setInterval(1000)  # 1000ms = 1s
         self.timer.timeout.connect(self.update_time)

@@ -30,8 +30,7 @@ class PageDataAnalysis(QSplitter):
 
     class OpenCV:
         def __init__(self, parent=None):
-            # 打开视频流
-            cap = cv2.VideoCapture(GlobalData.stream_url)
+            cap = cv2.VideoCapture(GlobalData.stream_url)   # 打开视频流
             while True:
                 ret, frame = cap.read()  # 读取一帧视频
                 if ret:     # 如果读取成功，显示帧
@@ -48,9 +47,9 @@ class PageDataAnalysis(QSplitter):
     class VideoStream(QLabel):
         def __init__(self):
             super().__init__()
+            self.cap = None
             self.setText("Key F6 to start/stop video stream")
             self.setAlignment(Qt.AlignCenter)
-            self.cap = cv2.VideoCapture(GlobalData.stream_url)
             self.timer = QTimer(self)
             self.timer.setInterval(30)  # 设置定时器的间隔时间为 30ms
             self.timer.timeout.connect(self.update_frame)
@@ -58,20 +57,25 @@ class PageDataAnalysis(QSplitter):
         def update_frame(self):
             ret, frame = self.cap.read()
             if ret:
-                rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # OpenCV 使用 BGR，但 Qt 使用 RGB，所以需要转换
-                h, w, ch = rgb_image.shape  # OpenCV 使用 numpy 数组，Qt 使用 QImage，所以需要转换
+                # rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)  # OpenCV 使用 BGR，但 Qt 使用 RGB，所以需要转换
+                # h, w, ch = rgb_image.shape  # OpenCV 使用 numpy 数组，Qt 使用 QImage，所以需要转换
+                # bytes_per_line = ch * w
+                # convert_to_Qt_format = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888).rgbSwapped()
+                h, w, ch = frame.shape  # OpenCV 使用 numpy 数组，Qt 使用 QImage，所以需要转换
                 bytes_per_line = ch * w
-                convert_to_Qt_format = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888).rgbSwapped()
-                pixmap = QPixmap.fromImage(convert_to_Qt_format)    # 将 QImage 转换为 QPixmap 以在 QLabel 上显示
+                convert_to_Qt_format = QImage(frame.data, w, h, bytes_per_line, QImage.Format_RGB888).rgbSwapped()
+                pixmap = QPixmap.fromImage(convert_to_Qt_format, Qt.AutoColor)    # 将 QImage 转换为 QPixmap 以在 QLabel 上显示
                 self.setPixmap(pixmap)
 
         def keyPressEvent(self, event: QKeyEvent):
             if event.key() == Qt.Key_F6:
                 if self.timer.isActive():
+                    self.cap.release()  # 释放摄像头资源
                     self.timer.stop()
                     self.clear()
                     self.setText("Key F6 to start/stop video stream")
                 else:
+                    self.cap = cv2.VideoCapture(GlobalData.stream_url)   # 打开视频流
                     self.timer.start()
 
     def wait_load_finished(self):
