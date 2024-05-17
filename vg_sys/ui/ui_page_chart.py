@@ -32,21 +32,6 @@ class Ui_data_view(object):
         self.graphicsView_h = QChartView(data_view)
         self.graphicsView_h.setObjectName(u"graphicsView_h")
         self.graphicsView_h.setGeometry(QRect(60, 430, 631, 251))
-        self.frame = QFrame(data_view)
-        self.frame.setObjectName(u"frame")
-        self.frame.setGeometry(QRect(730, 50, 481, 71))
-        self.frame.setFrameShape(QFrame.StyledPanel)
-        self.frame.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_2 = QHBoxLayout(self.frame)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.label_time = QLabel(self.frame)
-        self.label_time.setObjectName(u"label_time")
-        font = QFont()
-        font.setPointSize(20)
-        self.label_time.setFont(font)
-
-        self.horizontalLayout_2.addWidget(self.label_time)
-
         self.widget = QWidget(data_view)
         self.widget.setObjectName(u"widget")
         self.widget.setGeometry(QRect(970, 170, 261, 531))
@@ -181,6 +166,8 @@ class Ui_data_view(object):
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.label_val_at = QLabel(self.frame_at)
         self.label_val_at.setObjectName(u"label_val_at")
+        font = QFont()
+        font.setPointSize(20)
         self.label_val_at.setFont(font)
 
         self.gridLayout_4.addWidget(self.label_val_at, 0, 1, 1, 1)
@@ -281,70 +268,105 @@ class Ui_data_view(object):
 
         self.widget_3 = QWidget(data_view)
         self.widget_3.setObjectName(u"widget_3")
-        self.widget_3.setGeometry(QRect(720, 170, 221, 511))
+        self.widget_3.setGeometry(QRect(720, 40, 221, 641))
         self.verticalLayout = QVBoxLayout(self.widget_3)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.frame_sh_3 = QFrame(self.widget_3)
-        self.frame_sh_3.setObjectName(u"frame_sh_3")
-        self.frame_sh_3.setFrameShape(QFrame.StyledPanel)
-        self.frame_sh_3.setFrameShadow(QFrame.Raised)
-        self.gridLayout_12 = QGridLayout(self.frame_sh_3)
+        self.frame = QFrame(self.widget_3)
+        self.frame.setObjectName(u"frame")
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.gridLayout_2 = QGridLayout(self.frame)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.label_time_img = QLabel(self.frame)
+        self.label_time_img.setObjectName(u"label_time_img")
+        font2 = QFont()
+        font2.setPointSize(9)
+        self.label_time_img.setFont(font2)
+
+        self.gridLayout_2.addWidget(self.label_time_img, 0, 0, 4, 1)
+
+        self.label_time_time = QLabel(self.frame)
+        self.label_time_time.setObjectName(u"label_time_time")
+        self.label_time_time.setFont(font)
+
+        self.gridLayout_2.addWidget(self.label_time_time, 0, 1, 1, 3)
+
+        self.label_time_week = QLabel(self.frame)
+        self.label_time_week.setObjectName(u"label_time_week")
+        self.label_time_week.setFont(font1)
+
+        self.gridLayout_2.addWidget(self.label_time_week, 1, 3, 2, 1)
+
+        self.label_time_date = QLabel(self.frame)
+        self.label_time_date.setObjectName(u"label_time_date")
+        self.label_time_date.setFont(font1)
+
+        self.gridLayout_2.addWidget(self.label_time_date, 1, 1, 2, 2)
+
+
+        self.verticalLayout.addWidget(self.frame)
+
+        self.frame_li = QFrame(self.widget_3)
+        self.frame_li.setObjectName(u"frame_li")
+        self.frame_li.setFrameShape(QFrame.StyledPanel)
+        self.frame_li.setFrameShadow(QFrame.Raised)
+        self.gridLayout_12 = QGridLayout(self.frame_li)
         self.gridLayout_12.setObjectName(u"gridLayout_12")
-        self.label_img_sh_4 = QLabel(self.frame_sh_3)
-        self.label_img_sh_4.setObjectName(u"label_img_sh_4")
+        self.label_img_li = QLabel(self.frame_li)
+        self.label_img_li.setObjectName(u"label_img_li")
 
-        self.gridLayout_12.addWidget(self.label_img_sh_4, 0, 0, 2, 1)
+        self.gridLayout_12.addWidget(self.label_img_li, 0, 0, 2, 1)
 
-        self.label_val_sh_4 = QLabel(self.frame_sh_3)
-        self.label_val_sh_4.setObjectName(u"label_val_sh_4")
-        self.label_val_sh_4.setFont(font)
+        self.label_val_li = QLabel(self.frame_li)
+        self.label_val_li.setObjectName(u"label_val_li")
+        self.label_val_li.setFont(font)
 
-        self.gridLayout_12.addWidget(self.label_val_sh_4, 0, 1, 1, 1)
+        self.gridLayout_12.addWidget(self.label_val_li, 0, 1, 1, 1)
 
-        self.label_title_sh_4 = QLabel(self.frame_sh_3)
-        self.label_title_sh_4.setObjectName(u"label_title_sh_4")
-        self.label_title_sh_4.setFont(font1)
+        self.label_title_li = QLabel(self.frame_li)
+        self.label_title_li.setObjectName(u"label_title_li")
+        self.label_title_li.setFont(font1)
 
-        self.gridLayout_12.addWidget(self.label_title_sh_4, 1, 1, 1, 1)
+        self.gridLayout_12.addWidget(self.label_title_li, 1, 1, 1, 1)
 
 
-        self.verticalLayout.addWidget(self.frame_sh_3)
+        self.verticalLayout.addWidget(self.frame_li)
 
-        self.graphicsView_h_2 = QChartView(self.widget_3)
-        self.graphicsView_h_2.setObjectName(u"graphicsView_h_2")
+        self.graphicsView_li = QChartView(self.widget_3)
+        self.graphicsView_li.setObjectName(u"graphicsView_li")
 
-        self.verticalLayout.addWidget(self.graphicsView_h_2)
+        self.verticalLayout.addWidget(self.graphicsView_li)
 
-        self.frame_sh_2 = QFrame(self.widget_3)
-        self.frame_sh_2.setObjectName(u"frame_sh_2")
-        self.frame_sh_2.setFrameShape(QFrame.StyledPanel)
-        self.frame_sh_2.setFrameShadow(QFrame.Raised)
-        self.gridLayout_11 = QGridLayout(self.frame_sh_2)
+        self.frame_ap = QFrame(self.widget_3)
+        self.frame_ap.setObjectName(u"frame_ap")
+        self.frame_ap.setFrameShape(QFrame.StyledPanel)
+        self.frame_ap.setFrameShadow(QFrame.Raised)
+        self.gridLayout_11 = QGridLayout(self.frame_ap)
         self.gridLayout_11.setObjectName(u"gridLayout_11")
-        self.label_img_sh_3 = QLabel(self.frame_sh_2)
-        self.label_img_sh_3.setObjectName(u"label_img_sh_3")
+        self.label_img_ap = QLabel(self.frame_ap)
+        self.label_img_ap.setObjectName(u"label_img_ap")
 
-        self.gridLayout_11.addWidget(self.label_img_sh_3, 0, 0, 2, 1)
+        self.gridLayout_11.addWidget(self.label_img_ap, 0, 0, 2, 1)
 
-        self.label_val_sh_3 = QLabel(self.frame_sh_2)
-        self.label_val_sh_3.setObjectName(u"label_val_sh_3")
-        self.label_val_sh_3.setFont(font)
+        self.label_val_ap = QLabel(self.frame_ap)
+        self.label_val_ap.setObjectName(u"label_val_ap")
+        self.label_val_ap.setFont(font)
 
-        self.gridLayout_11.addWidget(self.label_val_sh_3, 0, 1, 1, 1)
+        self.gridLayout_11.addWidget(self.label_val_ap, 0, 1, 1, 1)
 
-        self.label_title_sh_3 = QLabel(self.frame_sh_2)
-        self.label_title_sh_3.setObjectName(u"label_title_sh_3")
-        self.label_title_sh_3.setFont(font1)
+        self.label_title_ap = QLabel(self.frame_ap)
+        self.label_title_ap.setObjectName(u"label_title_ap")
+        self.label_title_ap.setFont(font1)
 
-        self.gridLayout_11.addWidget(self.label_title_sh_3, 1, 1, 1, 1)
+        self.gridLayout_11.addWidget(self.label_title_ap, 1, 1, 1, 1)
 
 
-        self.verticalLayout.addWidget(self.frame_sh_2)
+        self.verticalLayout.addWidget(self.frame_ap)
 
-        self.graphicsView_h_3 = QChartView(self.widget_3)
-        self.graphicsView_h_3.setObjectName(u"graphicsView_h_3")
+        self.graphicsView_ap = QChartView(self.widget_3)
+        self.graphicsView_ap.setObjectName(u"graphicsView_ap")
 
-        self.verticalLayout.addWidget(self.graphicsView_h_3)
+        self.verticalLayout.addWidget(self.graphicsView_ap)
 
 
         self.retranslateUi(data_view)
@@ -354,7 +376,6 @@ class Ui_data_view(object):
 
     def retranslateUi(self, data_view):
         data_view.setWindowTitle(QCoreApplication.translate("data_view", u"Frame", None))
-        self.label_time.setText(QCoreApplication.translate("data_view", u"TextLabel", None))
         self.label_type_dev3.setText(QCoreApplication.translate("data_view", u"\u704c\u6e89\u6c34\u6cf5", None))
         self.label_state_dev3.setText(QCoreApplication.translate("data_view", u"\u8bbe\u5907\u72b6\u6001", None))
         self.label_img_dev3.setText(QCoreApplication.translate("data_view", u"\u56fe\u6807", None))
@@ -383,11 +404,15 @@ class Ui_data_view(object):
         self.label_img_sh.setText(QCoreApplication.translate("data_view", u"\u56fe\u6807", None))
         self.label_val_sh.setText(QCoreApplication.translate("data_view", u"N/A", None))
         self.label_title_sh.setText(QCoreApplication.translate("data_view", u"\u571f\u58e4\u6e7f\u5ea6", None))
-        self.label_img_sh_4.setText(QCoreApplication.translate("data_view", u"\u56fe\u6807", None))
-        self.label_val_sh_4.setText(QCoreApplication.translate("data_view", u"N/A", None))
-        self.label_title_sh_4.setText(QCoreApplication.translate("data_view", u"\u5149\u7167\u5f3a\u5ea6", None))
-        self.label_img_sh_3.setText(QCoreApplication.translate("data_view", u"\u56fe\u6807", None))
-        self.label_val_sh_3.setText(QCoreApplication.translate("data_view", u"N/A", None))
-        self.label_title_sh_3.setText(QCoreApplication.translate("data_view", u"\u5927\u6c14\u538b\u5f3a", None))
+        self.label_time_img.setText(QCoreApplication.translate("data_view", u"\u56fe\u6807", None))
+        self.label_time_time.setText(QCoreApplication.translate("data_view", u"\u65f6\u5206\u79d2", None))
+        self.label_time_week.setText(QCoreApplication.translate("data_view", u"\u661f\u671f", None))
+        self.label_time_date.setText(QCoreApplication.translate("data_view", u"\u5e74\u6708\u65e5", None))
+        self.label_img_li.setText(QCoreApplication.translate("data_view", u"\u56fe\u6807", None))
+        self.label_val_li.setText(QCoreApplication.translate("data_view", u"N/A", None))
+        self.label_title_li.setText(QCoreApplication.translate("data_view", u"\u5149\u7167\u5f3a\u5ea6", None))
+        self.label_img_ap.setText(QCoreApplication.translate("data_view", u"\u56fe\u6807", None))
+        self.label_val_ap.setText(QCoreApplication.translate("data_view", u"N/A", None))
+        self.label_title_ap.setText(QCoreApplication.translate("data_view", u"\u5927\u6c14\u538b\u5f3a", None))
     # retranslateUi
 

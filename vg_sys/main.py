@@ -475,6 +475,10 @@ class GlobalData:
     web_url_prefix = "http://"
     web_url_ = "http://192.168.52.133/"  # 视频流地址
     stream_url = 'http://192.168.52.133:81/stream'  # 视频流的URL
+    week = {"Mon": "星期一", "Tue": "星期二", "Wed": "星期三", "Thu": "星期四", "Fri": "星期五", "Sat": "星期六", "Sun": "星期日"}
+
+    title = QObject.tr("物联网智慧蔬菜大棚管理系统", "Village Green System")
+    icon_path = "img/hand-holding-seedling.svg"
 
     class EnvironmentalData:
         def __init__(self):
@@ -501,7 +505,7 @@ class GlobalData:
             self.air_temperature_warning = 0
 
     def __init__(self):
-        self.timer = QTimer(self)
+        self.timer = QTimer()
         self.timer.setInterval(1000)  # 设置定时器的间隔时间
         self.timer.timeout.connect(self.update_data)
 
@@ -530,8 +534,12 @@ class PageDataView(QWidget):
         self.data_view.label_img_dev3.setPixmap(gf_to_icon("img/fan.svg", QSize(50, 50)))
         self.data_view.label_img_dev4.setPixmap(gf_to_icon("img/fan.svg", QSize(50, 50)))
 
+        self.data_view.label_time_img.setPixmap(gf_to_icon("img/calendar-date.svg", QSize(50, 50)))
+
+        # TODO: 实现数据可视化
         # self.data_view.graphicsView_t.setChart(SinWaveChart())
         # self.data_view.graphicsView_h.setChart(SinWaveChart())
+        # self.data_view.graphicsView_h.setChart(PageManage())
 
         with open('theme/BaseFrame.qss', 'r') as file:
             style_sheet = file.read()
@@ -545,8 +553,11 @@ class PageDataView(QWidget):
         self.timer.start()
 
     def update_time(self):
-        current_time = QDateTime.currentDateTime().toString("yyyy-MM-dd hh:mm:ss A")
-        self.data_view.label_time.setText(current_time)
+        # current_time = QDateTime.currentDateTime().toString("yyyy-MM-dd hh:mm:ss A")
+        # self.data_view.label_time.setText(current_time)
+        self.data_view.label_time_date.setText(QDateTime.currentDateTime().toString("yyyy-MM-dd"))
+        self.data_view.label_time_time.setText(QDateTime.currentDateTime().toString("hh:mm:ss A"))
+        self.data_view.label_time_week.setText(GlobalData.week[QDateTime.currentDateTime().toString("ddd")])
 
 
 class PageManage(QFrame):
@@ -560,10 +571,11 @@ class PageManage(QFrame):
 class MainWidget(QFrame, PartAnimation):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(QObject.tr("物联网智慧蔬菜大棚管理系统", "Village Green System"))
-        self.setWindowIcon(gf_to_icon("img/hand-holding-seedling.svg"))
+        self.setWindowTitle(GlobalData.title)
+        self.setWindowIcon(gf_to_icon(GlobalData.icon_path))
         # apply_stylesheet(self, theme='theme/dark.xml')
         # apply_stylesheet(self, theme='theme/light.xml')
+        # self.setWindowFlag(Qt.WindowStaysOnTopHint)
 
         self.page_left = PageLeft()     # 46 32
         self.page_communication = PageCommunication()

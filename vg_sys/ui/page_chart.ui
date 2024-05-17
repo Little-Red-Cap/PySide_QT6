@@ -33,36 +33,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QFrame" name="frame">
-   <property name="geometry">
-    <rect>
-     <x>730</x>
-     <y>50</y>
-     <width>481</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
-    <item>
-     <widget class="QLabel" name="label_time">
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
     <rect>
@@ -423,14 +393,74 @@
    <property name="geometry">
     <rect>
      <x>720</x>
-     <y>170</y>
+     <y>40</y>
      <width>221</width>
-     <height>511</height>
+     <height>641</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QFrame" name="frame_sh_3">
+     <widget class="QFrame" name="frame">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0" rowspan="4">
+        <widget class="QLabel" name="label_time_img">
+         <property name="font">
+          <font>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>图标</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1" colspan="3">
+        <widget class="QLabel" name="label_time_time">
+         <property name="font">
+          <font>
+           <pointsize>20</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>时分秒</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3" rowspan="2">
+        <widget class="QLabel" name="label_time_week">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>星期</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" rowspan="2" colspan="2">
+        <widget class="QLabel" name="label_time_date">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>年月日</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QFrame" name="frame_li">
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
@@ -439,14 +469,14 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_12">
        <item row="0" column="0" rowspan="2">
-        <widget class="QLabel" name="label_img_sh_4">
+        <widget class="QLabel" name="label_img_li">
          <property name="text">
           <string>图标</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLabel" name="label_val_sh_4">
+        <widget class="QLabel" name="label_val_li">
          <property name="font">
           <font>
            <pointsize>20</pointsize>
@@ -458,7 +488,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLabel" name="label_title_sh_4">
+        <widget class="QLabel" name="label_title_li">
          <property name="font">
           <font>
            <pointsize>12</pointsize>
@@ -473,10 +503,10 @@
      </widget>
     </item>
     <item>
-     <widget class="QChartView" name="graphicsView_h_2"/>
+     <widget class="QChartView" name="graphicsView_li"/>
     </item>
     <item>
-     <widget class="QFrame" name="frame_sh_2">
+     <widget class="QFrame" name="frame_ap">
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
@@ -485,14 +515,14 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_11">
        <item row="0" column="0" rowspan="2">
-        <widget class="QLabel" name="label_img_sh_3">
+        <widget class="QLabel" name="label_img_ap">
          <property name="text">
           <string>图标</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLabel" name="label_val_sh_3">
+        <widget class="QLabel" name="label_val_ap">
          <property name="font">
           <font>
            <pointsize>20</pointsize>
@@ -504,7 +534,7 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLabel" name="label_title_sh_3">
+        <widget class="QLabel" name="label_title_ap">
          <property name="font">
           <font>
            <pointsize>12</pointsize>
@@ -519,7 +549,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QChartView" name="graphicsView_h_3"/>
+     <widget class="QChartView" name="graphicsView_ap"/>
     </item>
    </layout>
   </widget>

@@ -1,0 +1,27 @@
+__pycache__/*
+*/__pycache__
+gallery/*
+Login-UI/*
+opencv/*
+PyOneDark_Qt_Widgets_Modern_GUI/*
+PyOneDark_Qt_Widgets_Modern_GUI_test/*
+SerialPortAssistant/*
+SystemMonitoring/*
+Test_Project/*
+ui_odrivetool/*
+ui_odrivetool_Test/*
+venv/*
+蔬菜大棚管理系统/*
+
+vg_sys/output/*
+vg_sys/gallery/*
+vg_sys/i18n/*
+vg_sys/other/*
+vg_sys/test
+vg_sys/img/dev_type/*
+vg_sys/img/env_type/*
+vg_sys/img/undefined/*
+vg_sys/img/weather/*
+vg_sys/img/新建文件夹/*
+vg_sys/img/新建文件夹 (2)/*
+vg_sys/PySide6打包与部署.md
