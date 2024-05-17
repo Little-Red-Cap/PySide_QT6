@@ -15,9 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QFormLayout, QFrame,
-    QGroupBox, QHBoxLayout, QLabel, QLineEdit,
-    QPushButton, QScrollArea, QSizePolicy, QSpacerItem,
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDockWidget,
+    QFormLayout, QFrame, QGridLayout, QGroupBox,
+    QHBoxLayout, QLabel, QLineEdit, QPushButton,
+    QScrollArea, QSizePolicy, QSpacerItem, QTextBrowser,
     QVBoxLayout, QWidget)
 
 class Ui_Frame(object):
@@ -227,7 +228,12 @@ class Ui_Frame(object):
         self.pushButton_port = QPushButton(self.groupBox_port)
         self.pushButton_port.setObjectName(u"pushButton_port")
 
-        self.formLayout_port.setWidget(5, QFormLayout.SpanningRole, self.pushButton_port)
+        self.formLayout_port.setWidget(5, QFormLayout.FieldRole, self.pushButton_port)
+
+        self.pushButton_refresh = QPushButton(self.groupBox_port)
+        self.pushButton_refresh.setObjectName(u"pushButton_refresh")
+
+        self.formLayout_port.setWidget(5, QFormLayout.LabelRole, self.pushButton_refresh)
 
 
         self.verticalLayout_2.addLayout(self.formLayout_port)
@@ -245,6 +251,11 @@ class Ui_Frame(object):
 
         self.scrollArea = QScrollArea(Frame)
         self.scrollArea.setObjectName(u"scrollArea")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.scrollArea.sizePolicy().hasHeightForWidth())
+        self.scrollArea.setSizePolicy(sizePolicy)
         self.scrollArea.setMinimumSize(QSize(400, 0))
         self.scrollArea.setFrameShape(QFrame.NoFrame)
         self.scrollArea.setWidgetResizable(True)
@@ -559,12 +570,11 @@ class Ui_Frame(object):
 
         self.horizontalLayout_18.addWidget(self.label_18)
 
-        self.comboBox_16 = QComboBox(self.frame_18)
-        self.comboBox_16.addItem("")
-        self.comboBox_16.addItem("")
-        self.comboBox_16.setObjectName(u"comboBox_16")
+        self.lineEdit_4 = QLineEdit(self.frame_18)
+        self.lineEdit_4.setObjectName(u"lineEdit_4")
+        self.lineEdit_4.setEchoMode(QLineEdit.Password)
 
-        self.horizontalLayout_18.addWidget(self.comboBox_16)
+        self.horizontalLayout_18.addWidget(self.lineEdit_4)
 
 
         self.formLayout_2.setWidget(2, QFormLayout.FieldRole, self.frame_18)
@@ -619,9 +629,30 @@ class Ui_Frame(object):
 
         self.horizontalLayout_16.addWidget(self.scrollArea)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.dockWidget = QDockWidget(Frame)
+        self.dockWidget.setObjectName(u"dockWidget")
+        self.dockWidgetContents = QWidget()
+        self.dockWidgetContents.setObjectName(u"dockWidgetContents")
+        self.gridLayout_2 = QGridLayout(self.dockWidgetContents)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.checkBox = QCheckBox(self.dockWidgetContents)
+        self.checkBox.setObjectName(u"checkBox")
 
-        self.horizontalLayout_16.addItem(self.horizontalSpacer)
+        self.gridLayout_2.addWidget(self.checkBox, 0, 0, 1, 1)
+
+        self.pushButton_clear = QPushButton(self.dockWidgetContents)
+        self.pushButton_clear.setObjectName(u"pushButton_clear")
+
+        self.gridLayout_2.addWidget(self.pushButton_clear, 0, 1, 1, 1)
+
+        self.textBrowser = QTextBrowser(self.dockWidgetContents)
+        self.textBrowser.setObjectName(u"textBrowser")
+
+        self.gridLayout_2.addWidget(self.textBrowser, 1, 0, 1, 2)
+
+        self.dockWidget.setWidget(self.dockWidgetContents)
+
+        self.horizontalLayout_16.addWidget(self.dockWidget)
 
 
         self.retranslateUi(Frame)
@@ -677,9 +708,10 @@ class Ui_Frame(object):
         self.comboBox_stopBits.setItemText(2, QCoreApplication.translate("Frame", u"2", None))
 
         self.pushButton_port.setText(QCoreApplication.translate("Frame", u"\u6253\u5f00", None))
+        self.pushButton_refresh.setText(QCoreApplication.translate("Frame", u"\u5237\u65b0", None))
         self.groupBox.setTitle(QCoreApplication.translate("Frame", u"\u89c6\u9891\u8bbe\u7f6e", None))
         self.label_7.setText(QCoreApplication.translate("Frame", u"\u89c6\u9891\u6d41\u5730\u5740", None))
-        self.lineEdit.setText(QCoreApplication.translate("Frame", u"192.168.240.133", None))
+        self.lineEdit.setText(QCoreApplication.translate("Frame", u"192.168.52.133", None))
         self.label.setText(QCoreApplication.translate("Frame", u"\u64ad\u653e\u7b56\u7565", None))
         self.comboBox.setItemText(0, QCoreApplication.translate("Frame", u"\u5b9e\u65f6\u64ad\u653e", None))
         self.comboBox.setItemText(1, QCoreApplication.translate("Frame", u"\u5faa\u73af\u64ad\u653e", None))
@@ -726,13 +758,13 @@ class Ui_Frame(object):
         self.label_13.setText(QCoreApplication.translate("Frame", u"\u7528\u6237\u540d\u79f0", None))
         self.lineEdit_3.setText(QCoreApplication.translate("Frame", u"root", None))
         self.label_18.setText(QCoreApplication.translate("Frame", u"\u7528\u6237\u5bc6\u7801", None))
-        self.comboBox_16.setItemText(0, QCoreApplication.translate("Frame", u"\u901f\u5ea6\u4f18\u5148", None))
-        self.comboBox_16.setItemText(1, QCoreApplication.translate("Frame", u"\u8d28\u91cf\u4f18\u5148", None))
-
+        self.lineEdit_4.setText(QCoreApplication.translate("Frame", u"root", None))
         self.pushButton.setText(QCoreApplication.translate("Frame", u"\u8fde\u63a5\u6d4b\u8bd5", None))
         self.pushButton_2.setText(QCoreApplication.translate("Frame", u"\u521d\u59cb\u5316\u6570\u636e", None))
         self.label_17.setText(QCoreApplication.translate("Frame", u"\u8fde\u63a5\u8d85\u65f6", None))
         self.comboBox_15.setItemText(0, QCoreApplication.translate("Frame", u"\u4e0d\u5904\u7406", None))
 
+        self.checkBox.setText(QCoreApplication.translate("Frame", u"\u8ddf\u968f\u663e\u793a", None))
+        self.pushButton_clear.setText(QCoreApplication.translate("Frame", u"Clear", None))
     # retranslateUi
 

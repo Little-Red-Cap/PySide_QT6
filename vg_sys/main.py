@@ -11,15 +11,15 @@ from page_communi import *
 from page_data_analysis import *
 from page_data_view import *
 from page_manage import *
-from part_switch_button import *
 
 # import bottle
 # from bottle import Bottle, run
 # import pyqtgraph as pg
-
+from part_switch_button import *
 from py_gf.render_svg_to_pixmap import gf_to_icon
 from ui.ui_page_chart import *
 from ui.ui_page_setting import *
+from ui.ui_page_dev import *
 
 
 class EnvironmentalData:
@@ -389,96 +389,18 @@ class PartChart(QFrame):
 #     {'time': '2022-01-01 00:02:00', 'temperature': 27.0, 'humidity': 52.0},
 #         self.ui.label_2.setText(str(self.air_temperature) + "°C")
 
-class PageCommunication(QFrame):
-    def __init__(self):
-        super().__init__()
-        # self.chart = EnvironmentalDataVisualizer()
-        # self.layout().addWidget(self.chart)
-        # self.setLayout(QGridLayout(self))
-        self.button_state = False
-        self.settings = Ui_Frame()
-        self.settings.setupUi(self)
-
-        self.serial = QSerialPort()
-        self.serial.setBaudRate(115200)
-        self.serial.readyRead.connect(self.data_received)
-        self.serialPortList = []
-        # self.serial.setPortName('COM3')
-        # self.serial.setDataBits(Qt.Data8)
-        # self.serial.setParity(Qt.NoParity)
-        # self.serial.setStopBits(Qt.OneStop)
-        # self.serial.setFlowControl(Qt.NoFlowControl)
-        # self.serial.open()
-        # self.serial.readyRead.connect(self.read_data)
-
-        self.update_port()  # 先刷新串口列表，再connect信号槽
-        self.settings.comboBox_port.currentIndexChanged.connect(self.update_port)
-        self.settings.pushButton_port.clicked.connect(self.update_port_state)
-        self.settings.lineEdit.textChanged.connect(self.text_changed)
-
-    def text_changed(self):
-        print(self.settings.lineEdit.text())
-
-    def data_received(self):
-        data = self.serial.readAll()
-        print(data)
-
-    def update_port(self):
-        self.settings.comboBox_port.clear()
-        self.serialPortList = QSerialPortInfo.availablePorts()
-        if self.serialPortList.__len__() == 0:
-            self.settings.comboBox_port.addItem("未发现串口")
-        else:
-            for info in self.serialPortList:
-                self.settings.comboBox_port.addItem(info.portName() + " " + info.description(), info)
-                for baudRates in info.standardBaudRates():  # 添加波特率选项
-                    self.settings.comboBox_baudRates.addItem(str(baudRates), baudRates)
-            self.settings.comboBox_baudRates.setCurrentIndex(self.settings.comboBox_baudRates.findData(self.serial.baudRate()))
-            # self.serial.setPort(self.settings.comboBox_port.currentData())
-
-        # self.settings.comboBox_port.addItems(serialPortList)
-        # if self.settings.comboBox_port.currentIndex() in serialPortList:
-
-        # for port in QSerialPortInfo.availablePorts():
-        #     self.settings.comboBox_port.addItem(port.portName() + " " + port.description(), port)
-        #     # self.settings.comboBox_port.addItem(port.portName() + " " + port.description(), port.portName)
-        #     for baudRates in port.standardBaudRates():  # 添加波特率选项
-        #         self.settings.comboBox_baudRates.addItem(str(baudRates), baudRates)
-        # self.settings.comboBox_baudRates.setCurrentIndex(self.settings.comboBox_baudRates.findData(115200))  # 默认选择115200波特率
-
-    def update_port_state(self):
-        if self.serial.isOpen():
-            self.serial.close()
-            self.settings.pushButton_port.setText("打开串口")
-        else:
-            self.serial.setPort(self.settings.comboBox_port.currentData())
-            # self.serial.setBaudRate(self.settings.comboBox_baudRates.currentData())
-            self.serial.open(QIODevice.ReadWrite)
-            self.settings.pushButton_port.setText("关闭串口")
-            # self.serial.readyRead.connect(self.read_data)
-            # self.serial.write(bytes(self.settings.comboBox_port.currentData()))
-            # self.serial.write(QByteArray(self.serial.readAll()))
-            data = QByteArray(b"555")
-            self.serial.write(data)
-
-        # print(self.settings.comboBox_port.currentData())
-        # self.settings.comboBox_port.
-        # if self.settings.comboBox_port.currentData() is not None:
-        #     pass
-        # if self.settings.pushButton_port.toggled:
-        #     self.button_state = not self.button_state
-        #     self.settings.pushButton_port.setText("打开串口" if self.button_state else "关闭串口")
-
 
 class GlobalData:
     # https://blog.csdn.net/m0_48442491/article/details/128705183
-    web_url_prefix = "http://"
-    web_url_ = "http://192.168.52.133/"  # 视频流地址
-    stream_url = 'http://192.168.52.133:81/stream'  # 视频流的URL
-    week = {"Mon": "星期一", "Tue": "星期二", "Wed": "星期三", "Thu": "星期四", "Fri": "星期五", "Sat": "星期六", "Sun": "星期日"}
-
     title = QObject.tr("物联网智慧蔬菜大棚管理系统", "Village Green System")
     icon_path = "img/hand-holding-seedling.svg"
+    web_url = "http://192.168.52.133"  # 视频地址
+    stream_url = 'http://192.168.52.133:81/stream'  # 视频流地址
+    week = {"Mon": "星期一", "Tue": "星期二", "Wed": "星期三", "Thu": "星期四", "Fri": "星期五", "Sat": "星期六",
+            "Sun": "星期日"}
+
+    def __init__(self):
+        pass
 
     class EnvironmentalData:
         def __init__(self):
@@ -504,11 +426,6 @@ class GlobalData:
             self.soil_humidity_warning = 0
             self.air_temperature_warning = 0
 
-    def __init__(self):
-        self.timer = QTimer()
-        self.timer.setInterval(1000)  # 设置定时器的间隔时间
-        self.timer.timeout.connect(self.update_data)
-
     def update_data(self):
         pass
 
@@ -516,84 +433,41 @@ class GlobalData:
         pass
 
 
-class PageDataView(QWidget):
-    def __init__(self):
+class PageManage(QFrame):
+    def __init__(self, parent_obj=None):
         super().__init__()
-        # self.chart = PartChart()
+        self.page = Ui_Form()
+        self.page.setupUi(self)
+        # self.chart = MainWindow()
         # self.setLayout(QGridLayout(self))
         # self.layout().addWidget(self.chart)
-        self.data_view = Ui_data_view()
-        self.data_view.setupUi(self)
-
-        self.data_view.label_img_at.setPixmap(gf_to_icon("img/大气温度.svg", QSize(50, 50)))
-        self.data_view.label_img_ah.setPixmap(gf_to_icon("img/大气湿度.svg", QSize(50, 50)))
-        self.data_view.label_img_st.setPixmap(gf_to_icon("img/土壤温度.svg", QSize(50, 50)))
-        self.data_view.label_img_sh.setPixmap(gf_to_icon("img/土壤湿度.svg", QSize(50, 50)))
-        self.data_view.label_img_dev1.setPixmap(gf_to_icon("img/水泵.svg", QSize(50, 50)))
-        self.data_view.label_img_dev2.setPixmap(gf_to_icon("img/fan.svg", QSize(50, 50)))
-        self.data_view.label_img_dev3.setPixmap(gf_to_icon("img/fan.svg", QSize(50, 50)))
-        self.data_view.label_img_dev4.setPixmap(gf_to_icon("img/fan.svg", QSize(50, 50)))
-
-        self.data_view.label_time_img.setPixmap(gf_to_icon("img/calendar-date.svg", QSize(50, 50)))
-
-        # TODO: 实现数据可视化
-        # self.data_view.graphicsView_t.setChart(SinWaveChart())
-        # self.data_view.graphicsView_h.setChart(SinWaveChart())
-        # self.data_view.graphicsView_h.setChart(PageManage())
-
-        with open('theme/BaseFrame.qss', 'r') as file:
-            style_sheet = file.read()
-            # self.setStyleSheet(style_sheet)
-            self.data_view.widget_2.setStyleSheet(style_sheet)
-            self.data_view.widget.setStyleSheet(style_sheet)
-
-        self.timer = QTimer(self)
-        self.timer.setInterval(1000)  # 1000ms = 1s
-        self.timer.timeout.connect(self.update_time)
-        self.timer.start()
-
-    def update_time(self):
-        # current_time = QDateTime.currentDateTime().toString("yyyy-MM-dd hh:mm:ss A")
-        # self.data_view.label_time.setText(current_time)
-        self.data_view.label_time_date.setText(QDateTime.currentDateTime().toString("yyyy-MM-dd"))
-        self.data_view.label_time_time.setText(QDateTime.currentDateTime().toString("hh:mm:ss A"))
-        self.data_view.label_time_week.setText(GlobalData.week[QDateTime.currentDateTime().toString("ddd")])
-
-
-class PageManage(QFrame):
-    def __init__(self):
-        super().__init__()
-        self.chart = MainWindow()
-        self.setLayout(QGridLayout(self))
-        self.layout().addWidget(self.chart)
 
 
 class MainWidget(QFrame, PartAnimation):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(GlobalData.title)
-        self.setWindowIcon(gf_to_icon(GlobalData.icon_path))
+        self.global_data = GlobalData()
+        self.setWindowTitle(self.global_data.title)
+        self.setWindowIcon(gf_to_icon(self.global_data.icon_path))
         # apply_stylesheet(self, theme='theme/dark.xml')
         # apply_stylesheet(self, theme='theme/light.xml')
         # self.setWindowFlag(Qt.WindowStaysOnTopHint)
-
-        self.page_left = PageLeft()     # 46 32
-        self.page_communication = PageCommunication()
-        self.page_data_view = PageDataView()
-        self.page_data_analysis = PageDataAnalysis()
-        self.page_manage = PageManage()
+        self.page_left = PageLeft(self)     # 46 32
+        self.page_communication = PageCommunication(self)
+        self.page_data_view = PageDataView(self)
+        self.page_data_analysis = PageDataAnalysis(self)
+        self.page_manage = PageManage(self)
         self.stacked_pages = QStackedWidget(self)
         self.stacked_pages.addWidget(self.page_communication)
         self.stacked_pages.addWidget(self.page_data_view)
         self.stacked_pages.addWidget(self.page_data_analysis)
         self.stacked_pages.addWidget(self.page_manage)
         self.page_left.page_index_changed.connect(self.stacked_pages.setCurrentIndex)  # 将左、右侧页面的切换信号作关联
-        layout = QHBoxLayout()
+        layout = QHBoxLayout(self)
         layout.setSpacing(0)
         layout.setContentsMargins(3, 0, 0, 0)
         layout.addWidget(self.page_left)
         layout.addWidget(self.stacked_pages)
-        self.setLayout(layout)
         self.resize(1280, 720)
 
     def keyPressEvent(self, event: QKeyEvent):

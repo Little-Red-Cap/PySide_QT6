@@ -1,0 +1,33 @@
+{
+    "node": {
+        "id": "",
+        "name": null,
+        "type": null,
+        "location": null,
+        "status": "normal",
+        "last_updated": ""
+    },
+    "timestamp": "",
+    "environment": {
+        "airTemperature": 22.0,
+        "airHumidity": 55.0,
+        "soilTemperature": 22.0,
+        "soilHumidity": 55.0,
+        "lightIntensity": 400,
+        "airPressure": 1010.0
+    },
+    "devices": {
+        "waterPump": {
+            "status": "off"
+        },
+        "fan": {
+            "status": "on"
+        },
+        "light": {
+            "status": "off"
+        },
+        "InsectKillingLamp": {
+            "status": "off"
+        }
+    }
+}

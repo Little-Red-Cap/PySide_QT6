@@ -1,36 +1,39 @@
 from import_modules import *
-from main import GlobalData
 
 
 class PageDataAnalysis(QSplitter):
     key_pressed = Signal(QKeyEvent)
 
-    def __init__(self):
+    def __init__(self, parent_obj=None):
         super().__init__()
+        self.parent_obj = parent_obj
         # self.chart = InfoWidget()
-        self.page_setting = self.Browser()
+        self.page_setting = self.Browser(parent_obj)
         self.page_setting.setMaximumWidth(380)
-        self.page_video_stream = self.VideoStream()
+        self.page_video_stream = self.VideoStream(parent_obj)
         self.addWidget(self.page_setting)
         self.addWidget(self.page_video_stream)
         self.page_setting.loadFinished.connect(self.wait_load_finished)
 
     class Browser(QWebEngineView):
-        def __init__(self, parent=None):
-            super().__init__(parent)
+        def __init__(self, parent_obj=None):
+            super().__init__()
+            self.parent_obj = parent_obj
             html_file = "test.html"
             current_dir = os.path.dirname(os.path.abspath(__file__))  # 获取当前 Python 文件的目录
             html_path = os.path.join(current_dir, html_file)
             # self.browser.load(QUrl.fromLocalFile(html_path))        # 加载HTML
-            self.load(QUrl(GlobalData.web_url_))
+            self.load(QUrl(self.parent_obj.web_url))
 
         def keyPressEvent(self, event: QKeyEvent):
             if event.key() == Qt.Key_F5:
-                self.reload()
+                self.load(QUrl(self.parent_obj.web_url))
+                # self.reload()
 
     class OpenCV:
-        def __init__(self, parent=None):
-            cap = cv2.VideoCapture(GlobalData.stream_url)   # 打开视频流
+        def __init__(self, parent_obj=None):
+            self.parent_obj = parent_obj
+            cap = cv2.VideoCapture(self.parent_obj.stream_url)   # 打开视频流
             while True:
                 ret, frame = cap.read()  # 读取一帧视频
                 if ret:     # 如果读取成功，显示帧
@@ -45,8 +48,9 @@ class PageDataAnalysis(QSplitter):
             cv2.destroyAllWindows()  # 销毁所有窗口
 
     class VideoStream(QLabel):
-        def __init__(self):
+        def __init__(self, parent_obj=None):
             super().__init__()
+            self.parent_obj = parent_obj
             self.cap = None
             self.setText("Key F6 to start/stop video stream")
             self.setAlignment(Qt.AlignCenter)
@@ -75,7 +79,7 @@ class PageDataAnalysis(QSplitter):
                     self.clear()
                     self.setText("Key F6 to start/stop video stream")
                 else:
-                    self.cap = cv2.VideoCapture(GlobalData.stream_url)   # 打开视频流
+                    self.cap = cv2.VideoCapture(self.parent_obj.stream_url)   # 打开视频流
                     self.timer.start()
 
     def wait_load_finished(self):

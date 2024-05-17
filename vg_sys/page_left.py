@@ -1,6 +1,5 @@
 from functools import partial
-from PySide6.QtCore import Signal, QSize, Qt, Property, QPropertyAnimation, QEasingCurve
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QApplication, QSpacerItem, QSizePolicy
+from import_modules import *
 from py_gf.render_svg_to_pixmap import gf_to_icon
 
 
@@ -15,7 +14,7 @@ class PageLeft(QFrame):
             self.tip = tip
             self.func = func
 
-    def __init__(self):
+    def __init__(self, parent_obj=None):
         super().__init__()
         # frame = QFrame()
         # layout = QVBoxLayout(frame)

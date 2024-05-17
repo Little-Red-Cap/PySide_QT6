@@ -48,10 +48,10 @@ from PySide6.QtWebEngineWidgets import *
 from PySide6.QtUiTools import *
 from PySide6.QtSvg import QSvgRenderer
 import PySide6.QtSql
-from PySide6.QtCore import Signal, QUrl, Qt, QEventLoop
+from PySide6.QtCore import Signal, SignalInstance, QUrl, Qt, QEventLoop, QSize, QTimer, QPointF
 from PySide6.QtGui import QImage
+from PySide6.QtWidgets import QDockWidget, QSizePolicy
 from PySide6 import QtSerialBus
-from PySide6.QtCore import SignalInstance
 
 # from qt_material import *
 from qt_material import apply_stylesheet
