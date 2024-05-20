@@ -1,0 +1,8 @@
+QFrame#data_view {
+    background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+/*                                        stop:0 rgba(212, 137, 255, 255),*/
+/*                                        stop:1 rgba(121, 133, 255, 255)*/
+                                        stop:0 rgba(207, 212, 255, 255),
+                                        stop:1 rgba(226, 239, 248, 255)
+                                        );
+}

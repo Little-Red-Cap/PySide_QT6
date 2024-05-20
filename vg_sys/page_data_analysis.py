@@ -7,7 +7,6 @@ class PageDataAnalysis(QSplitter):
     def __init__(self, parent_obj=None):
         super().__init__()
         self.parent_obj = parent_obj
-        # self.chart = InfoWidget()
         self.page_setting = self.Browser(parent_obj)
         self.page_setting.setMaximumWidth(380)
         self.page_video_stream = self.VideoStream(parent_obj)
@@ -48,6 +47,8 @@ class PageDataAnalysis(QSplitter):
             cv2.destroyAllWindows()  # 销毁所有窗口
 
     class VideoStream(QLabel):
+        # 参考 https://blog.csdn.net/m0_48442491/article/details/128705183
+        # GET请求参考 https://blog.51cto.com/u_12968/10279479 （未实现）
         def __init__(self, parent_obj=None):
             super().__init__()
             self.parent_obj = parent_obj

@@ -17,6 +17,7 @@ QLabel {
     color: rgba(0, 0, 0, 255);
     font-family: "Microsoft YaHei UI";
     font-weight: bold;      /*加粗;*/
+    qproperty-alignment: 'AlignCenter';  /*居中对齐*/
 }
 QLabel#label_title_at, #label_title_ah, #label_title_st, #label_title_sh {
     font-size: 12px;

@@ -1,5 +1,7 @@
 __pycache__/*
-*/__pycache__
+*/__pycache__/
+vg_sys/ui/__pycache__/*
+vg_sys/py_gf/__pycache__/*
 gallery/*
 Login-UI/*
 opencv/*
@@ -25,3 +27,4 @@ vg_sys/img/weather/*
 vg_sys/img/新建文件夹/*
 vg_sys/img/新建文件夹 (2)/*
 vg_sys/PySide6打包与部署.md
+vg_sys/images/*

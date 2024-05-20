@@ -1,26 +1,26 @@
 import os
 import sys
 import time
-from datetime import datetime
+# from datetime import datetime
 import math
 import random
 
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
+# import numpy as np
+# import pandas as pd
+# import matplotlib.pyplot as plt
 
 import json
-import sqlite3
-
-import socket
+# import sqlite3
+#
+# import socket
 
 # import pyudev
 # import usb.core
 # import usb.util
-import threading
-import requests
-import serial
-import serial.tools.list_ports
+# import threading
+# import requests
+# import serial
+# import serial.tools.list_ports
 
 import cv2
 # from ultralytics import YOLO
@@ -29,9 +29,9 @@ import cv2
 
 
 # import decorator    # 装饰器
-import traceback    # 异常处理
-import logging      # 日志记录
-import inspect      # 反射
+# import traceback    # 异常处理
+# import logging      # 日志记录
+# import inspect      # 反射
 
 # from gluon import *  # web2py framework
 # from lida import *   # 自然语言处理NLP库
@@ -54,7 +54,7 @@ from PySide6.QtWidgets import QDockWidget, QSizePolicy
 from PySide6 import QtSerialBus
 
 # from qt_material import *
-from qt_material import apply_stylesheet
+# from qt_material import apply_stylesheet
 
 # https://blog.csdn.net/lemonbit/article/details/134760092
 # import pyqtgraph

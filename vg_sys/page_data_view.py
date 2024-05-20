@@ -3,10 +3,11 @@ from ui.ui_page_chart import *
 from py_gf.render_svg_to_pixmap import gf_to_icon
 
 
-class PageDataView(QWidget):
-    def __init__(self, parent_obj=None):
+class PageDataView(QFrame):
+    week = {"Mon": "星期一", "Tue": "星期二", "Wed": "星期三", "Thu": "星期四", "Fri": "星期五", "Sat": "星期六", "Sun": "星期日"}
+
+    def __init__(self, parent):
         super().__init__()
-        self.parent_obj = parent_obj
         # self.chart = PartChart()
         # self.setLayout(QGridLayout(self))
         # self.layout().addWidget(self.chart)
@@ -32,6 +33,10 @@ class PageDataView(QWidget):
         #动态列表
         #https://www.bilibili.com/read/cv34228805/
 
+        with open('theme/bgColor.qss', 'r') as file:
+            style_sheet = file.read()
+            self.setStyleSheet(style_sheet)
+
         with open('theme/BaseFrame.qss', 'r') as file:
             style_sheet = file.read()
             # self.setStyleSheet(style_sheet)
@@ -45,8 +50,16 @@ class PageDataView(QWidget):
         self.timer.start()
 
     def update_time(self):
-        # current_time = QDateTime.currentDateTime().toString("yyyy-MM-dd hh:mm:ss A")
-        # self.data_view.label_time.setText(current_time)
         self.data_view.label_time_date.setText(QDateTime.currentDateTime().toString("yyyy-MM-dd"))
         self.data_view.label_time_time.setText(QDateTime.currentDateTime().toString("hh:mm:ss A"))
-        self.data_view.label_time_week.setText(self.parent_obj.global_data.week[QDateTime.currentDateTime().toString("ddd")])
+        self.data_view.label_time_week.setText(self.week[QDateTime.currentDateTime().toString("ddd")])
+
+    def update_data_view(self, json_dict):
+        self.data_view.label_val_at.setText(str(json_dict.get('environment', {}).get('airTemperature', '')) + '°C')
+        self.data_view.label_val_ah.setText(str(json_dict.get('environment', {}).get('airHumidity', '')) + '%RH')
+        self.data_view.label_val_st.setText(str(json_dict.get('environment', {}).get('soilTemperature', '')) + '°C')
+        self.data_view.label_val_sh.setText(str(json_dict.get('environment', {}).get('soilHumidity', '')) + '%RH')
+        self.data_view.label_val_ap.setText(str(json_dict.get('environment', {}).get('airPressure', '')) + 'hPa')
+        self.data_view.label_val_li.setText(str(json_dict.get('environment', {}).get('lightIntensity', '')) + 'lx')
+        self.data_view.label_state_dev1.setText(str(json_dict.get('devices', {}).get('waterPump', {}).get('status', '')))
+        self.data_view.label_state_dev2.setText(str(json_dict.get('devices', {}).get('fan', {}).get('status', '')))

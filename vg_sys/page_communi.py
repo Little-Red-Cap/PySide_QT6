@@ -3,19 +3,27 @@ from ui.ui_page_setting import *
 
 
 class PageCommunication(QFrame):
+    update_json = Signal(str)
+    json_dict = Signal(dict)
+
     def __init__(self, parent_obj=None):
         super().__init__()
         self.parent_obj = parent_obj
-        # self.chart = EnvironmentalDataVisualizer()
-        # self.layout().addWidget(self.chart)
-        # self.setLayout(QGridLayout(self))
         self.button_state = False
         self.settings = Ui_Frame()
         self.settings.setupUi(self)
         self.settings.dockWidget.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
         # self.settings.dockWidget.setWindowTitle(self.parent_obj.windowTitle())
         self.settings.dockWidget.setWindowTitle("log")
-
+        self.settings.textBrowser.setStyleSheet("background-color:rgb(240,240,240); border: none;")
+        self.settings.textBrowser.verticalScrollBar().setStyleSheet("QScrollBar:handle { visibility: hidden; }")
+        # self.settings.textBrowser.setMarkdown("# 日志\n\n")
+        self.settings.comboBox_baudRates.setEnabled(True)
+        self.settings.comboBox_dataBits.setEnabled(False)
+        self.settings.comboBox_checkBits.setEnabled(False)
+        self.settings.comboBox_stopBits.setEnabled(False)
+        # self.settings.comboBox_parity.setEnabled(False)
+        # self.settings.comboBox_flowControl.setEnabled(False)
         self.serial = QSerialPort()
         for baudRates in QSerialPortInfo.standardBaudRates():  # 添加波特率选项
             self.settings.comboBox_baudRates.addItem(str(baudRates), baudRates)
@@ -51,11 +59,8 @@ class PageCommunication(QFrame):
                     break
                 json_data = self.buffer[:index].decode()  # 解码字节串为字符串
                 self.buffer = self.buffer[index+1:]  # 移除已解析的部分和换行符
-                # 发送解析后的JSON数据
-                # self.dataReceived.emit(json_data)
-                json_string = json.dumps(json_data, indent=4)
-                print(json_string)
-                print("=" * 50)
+                # self.update_json.emit(json_data)    # 发送解析后的JSON数据
+                self.json_dict.emit(json.loads(json_data))   # 发送解析后的JSON字典数据
             except json.JSONDecodeError:
                 # 如果解析失败，可能是因为数据不完整，回到循环的开头等待更多数据
                 break

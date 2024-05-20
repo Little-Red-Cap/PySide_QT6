@@ -15,98 +15,32 @@ from page_manage import *
 # import bottle
 # from bottle import Bottle, run
 # import pyqtgraph as pg
-from part_switch_button import *
-from py_gf.render_svg_to_pixmap import gf_to_icon
-from ui.ui_page_chart import *
-from ui.ui_page_setting import *
-from ui.ui_page_dev import *
+# https://doc.qt.io/qt-6/qt.html
+from ultralytics import YOLO
+
+model = YOLO('yolov8n.pt')
 
 
-class EnvironmentalData:
-    air_temperature = float
-    air_humidity = float
-    soil_temperature = float
-    soil_humidity = float
-    light_intensity = float
-    atmospheric_pressure = float
-
-    def __init__(self):
-        self.timestamp = None
-        self.air_temperature = None
-        self.air_humidity = None
-        self.soil_temperature = None
-        self.soil_humidity = None
-        self.light_intensity = None
-        self.atmospheric_pressure = None
-
-    def update_data(self, air_temp, air_hum, soil_temp, soil_hum, light_int, atmospheric_press):
-        self.air_temperature = air_temp
-        self.air_humidity = air_hum
-        self.soil_temperature = soil_temp
-        self.soil_humidity = soil_hum
-        self.light_intensity = light_int
-        self.atmospheric_pressure = atmospheric_press
-
-
-class EnvironmentalDataVisualizer(QWidget, EnvironmentalData):
-    def __init__(self):
-        super().__init__()
-        self.timer = None
-        self.data_model = EnvironmentalData()
-        self.init_ui()
-        self.start_timer()
-
-    def init_ui(self):
-        layout = QVBoxLayout()
-
-        # 创建标签来显示数据
-        self.air_temp_label = QLabel("Air Temperature: N/A")
-        self.air_hum_label = QLabel("Air Humidity: N/A")
-        self.soil_temp_label = QLabel("Soil Temperature: N/A")
-        self.soil_hum_label = QLabel("Soil Humidity: N/A")
-        self.light_int_label = QLabel("Light Intensity: N/A")
-        self.atm_press_label = QLabel("Atmospheric Pressure: N/A")
-
-        # 将标签添加到布局中
-        layout.addWidget(self.air_temp_label)
-        layout.addWidget(self.air_hum_label)
-        layout.addWidget(self.soil_temp_label)
-        layout.addWidget(self.soil_hum_label)
-        layout.addWidget(self.light_int_label)
-        layout.addWidget(self.atm_press_label)
-
-        self.setLayout(layout)
-
-    def update_display(self):
-        # 更新标签的文本以显示最新的数据
-        self.air_temp_label.setText(f"Air Temperature: {self.data_model.air_temperature}")
-        self.air_hum_label.setText(f"Air Humidity: {self.data_model.air_humidity}")
-        self.soil_temp_label.setText(f"Soil Temperature: {self.data_model.soil_temperature}")
-        self.soil_hum_label.setText(f"Soil Humidity: {self.data_model.soil_humidity}")
-        self.light_int_label.setText(f"Light Intensity: {self.data_model.light_intensity}")
-        self.atm_press_label.setText(f"Atmospheric Pressure: {self.data_model.atmospheric_pressure}")
-
-    def update_data1(self):
-        # 生成随机数据
-        air_temp = random.uniform(0, 50)  # 假设空气温度在0到50度之间
-        air_hum = random.uniform(0, 100)  # 假设空气湿度在0到100%之间
-        soil_temp = random.uniform(0, 50)  # 假设空气湿度在0到100%之间
-        soil_hum = random.uniform(0, 100)  # 假设空气湿度在0到100%之间
-        light_int = random.uniform(0, 100)  # 假设空气湿度在0到100%之间
-        atmospheric_press = random.uniform(0, 100)  # 假设空气湿度在0到100%之间
-        # ...（为其他变量生成随机值）
-
-        # 更新数据模型
-        self.data_model.update_data(air_temp, air_hum, soil_temp, soil_hum, light_int, atmospheric_press)
-
-        # 更新UI显示
-        self.update_display()
-
-    def start_timer(self):
-        # 创建一个定时器，每1000毫秒（1秒）触发一次timeout信号
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update_data1)
-        self.timer.start(1000)  # 启动定时器，每1秒触发一次
+# class DeletedClass(QFrame):
+#     def update_display(self):
+#         # 更新标签的文本以显示最新的数据
+#         self.air_temp_label.setText(f"Air Temperature: {self.data_model.air_temperature}")
+#         self.air_hum_label.setText(f"Air Humidity: {self.data_model.air_humidity}")
+#         self.soil_temp_label.setText(f"Soil Temperature: {self.data_model.soil_temperature}")
+#         self.soil_hum_label.setText(f"Soil Humidity: {self.data_model.soil_humidity}")
+#         self.light_int_label.setText(f"Light Intensity: {self.data_model.light_intensity}")
+#         self.atm_press_label.setText(f"Atmospheric Pressure: {self.data_model.atmospheric_pressure}")
+#     def update_data1(self):
+#         air_temp = random.uniform(0, 50)  # 假设空气温度在0到50度之间
+#         air_hum = random.uniform(0, 100)  # 假设空气湿度在0到100%之间
+#         soil_temp = random.uniform(0, 50)  # 假设空气湿度在0到100%之间
+#         soil_hum = random.uniform(0, 100)  # 假设空气湿度在0到100%之间
+#         light_int = random.uniform(0, 100)  # 假设空气湿度在0到100%之间
+#         atmospheric_press = random.uniform(0, 100)  # 假设空气湿度在0到100%之间
+#         # 更新数据模型
+#         self.data_model.update_data(air_temp, air_hum, soil_temp, soil_hum, light_int, atmospheric_press)
+#         # 更新UI显示
+#         self.update_display()
 
 
 class ChartTest(QFrame):
@@ -391,67 +325,32 @@ class PartChart(QFrame):
 
 
 class GlobalData:
-    # https://blog.csdn.net/m0_48442491/article/details/128705183
-    title = QObject.tr("物联网智慧蔬菜大棚管理系统", "Village Green System")
-    icon_path = "img/hand-holding-seedling.svg"
     web_url = "http://192.168.52.133"  # 视频地址
     stream_url = 'http://192.168.52.133:81/stream'  # 视频流地址
-    week = {"Mon": "星期一", "Tue": "星期二", "Wed": "星期三", "Thu": "星期四", "Fri": "星期五", "Sat": "星期六",
-            "Sun": "星期日"}
+    items = {}
 
-    def __init__(self):
-        pass
-
-    class EnvironmentalData:
-        def __init__(self):
-            self.air_humidity = 0.0
-            self.air_temperature = 0.0
-            self.soil_humidity = 0.0
-            self.soil_temperature = 0.0
-            self.water_pump_status = 0
-            self.fan_status = 0
-            self.light_status = 0
-            self.air_humidity_status = 0
-            self.soil_humidity_status = 0
-            self.air_temperature_status = 0
-            self.soil_temperature_status = 0
-            self.water_pump_status_str = "关闭"
-            self.fan_status_str = "关闭"
-            self.light_status_str = "关闭"
-            self.air_humidity_status_str = "正常"
-            self.soil_humidity_status_str = "正常"
-            self.air_temperature_status_str = "正常"
-            self.soil_temperature_status_str = "正常"
-            self.air_humidity_warning = 0
-            self.soil_humidity_warning = 0
-            self.air_temperature_warning = 0
-
-    def update_data(self):
-        pass
-
-    def create_json(self):
-        pass
-
-
-class PageManage(QFrame):
-    def __init__(self, parent_obj=None):
-        super().__init__()
-        self.page = Ui_Form()
-        self.page.setupUi(self)
-        # self.chart = MainWindow()
-        # self.setLayout(QGridLayout(self))
-        # self.layout().addWidget(self.chart)
+    def update_josn_data(self, json_data):
+        # json_string = json.dumps(self.items, indent=4)  # 字典转字符串
+        self.items = json.loads(json_data)  # 字符串转字典
+        temperature = self.items['environment']['airTemperature']
+        print(f"air temperature: {temperature}°C")
+        # humidity = self.items['environment']['airHumidity']
 
 
 class MainWidget(QFrame, PartAnimation):
+    # https://blog.csdn.net/eiilpux17/article/details/124776295
+    # https://blog.csdn.net/m0_48442491/article/details/128705183
+    title = QObject.tr("物联网智慧蔬菜大棚管理系统", "Village Green System")
+    icon_path = "img/hand-holding-seedling.svg"
+
     def __init__(self):
         super().__init__()
         self.global_data = GlobalData()
-        self.setWindowTitle(self.global_data.title)
-        self.setWindowIcon(gf_to_icon(self.global_data.icon_path))
+        self.setWindowTitle(self.title)
+        self.setWindowIcon(gf_to_icon(self.icon_path))
         # apply_stylesheet(self, theme='theme/dark.xml')
         # apply_stylesheet(self, theme='theme/light.xml')
-        # self.setWindowFlag(Qt.WindowStaysOnTopHint)
+        self.setWindowFlag(Qt.WindowStaysOnTopHint)
         self.page_left = PageLeft(self)     # 46 32
         self.page_communication = PageCommunication(self)
         self.page_data_view = PageDataView(self)
@@ -463,19 +362,50 @@ class MainWidget(QFrame, PartAnimation):
         self.stacked_pages.addWidget(self.page_data_analysis)
         self.stacked_pages.addWidget(self.page_manage)
         self.page_left.page_index_changed.connect(self.stacked_pages.setCurrentIndex)  # 将左、右侧页面的切换信号作关联
+        # self.page_communication.update_json.connect(self.global_data.update_josn_data)  # 接收Json数据
+        self.page_communication.json_dict.connect(self.page_data_view.update_data_view)
         layout = QHBoxLayout(self)
         layout.setSpacing(0)
         layout.setContentsMargins(3, 0, 0, 0)
         layout.addWidget(self.page_left)
         layout.addWidget(self.stacked_pages)
         self.resize(1280, 720)
+        self.opacity_value = 1.0  # 初始值
+        self.opacity_step = 0.01  # 步长
+        self.window_infos = []
 
     def keyPressEvent(self, event: QKeyEvent):
-        if event.key() == Qt.Key_F2:
-            if self.page_left.isHidden():
+        if event.key() == Qt.Key_F12:
+            if self.page_left.isHidden() and self.isFullScreen():
                 self.page_left.show()
+                self.setWindowState(self.window_infos[0])
+                self.setWindowFlags(self.window_infos[1])
+                self.show()
             else:
                 self.page_left.setHidden(True)
+                self.window_infos = [self.windowState(), self.windowFlags()]
+                # self.setWindowState(Qt.WindowNoState)  # 隐藏状态栏
+                self.setWindowFlag(Qt.FramelessWindowHint)  # 隐藏边框
+                self.showFullScreen()
+        if event.modifiers() & Qt.ControlModifier and event.key() == Qt.Key_Tab:
+            self.stacked_pages.setCurrentIndex((self.stacked_pages.currentIndex() + 1) % self.stacked_pages.count())
+        elif event.modifiers() & Qt.ControlModifier and event.key() == Qt.Key_QuoteLeft:
+            self.page_left.show() if self.page_left.isHidden() else self.page_left.setHidden(True)
+        else:
+            super().keyPressEvent(event)
+
+    def wheelEvent(self, event: QWheelEvent):
+        if event.modifiers() & Qt.ControlModifier:  # 检查是否按下了Ctrl键
+            if event.angleDelta().y() > 0:  # 向上滚动
+                if self.opacity_value < 1.0:
+                    self.opacity_value += self.opacity_step
+                    self.opacity_value = min(self.opacity_value, 1.0)  # 确保值不超过1.0
+            else:  # 向下滚动
+                if self.opacity_value > 0.01:
+                    self.opacity_value -= self.opacity_step
+                    self.opacity_value = max(self.opacity_value, 0.01)  # 确保值不小于0.
+            self.setWindowOpacity(self.opacity_value)
+        super().wheelEvent(event)
 
     # def showEvent(self, event) -> None:
     #     self.show_animation()
