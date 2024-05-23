@@ -6,95 +6,92 @@ from py_gf.render_svg_to_pixmap import gf_to_icon
 class PageDataView(QFrame):
     week = {"Mon": "星期一", "Tue": "星期二", "Wed": "星期三", "Thu": "星期四", "Fri": "星期五", "Sat": "星期六", "Sun": "星期日"}
 
-    class ChartTemp(QChart):
+    class BaseChart(QChart):
         def __init__(self, parent=None):
             super().__init__(parent)
             self.setAnimationOptions(QChart.SeriesAnimations)  # 开启动画效果
             self.setAnimationDuration(1000)  # 动画持续时间
-            # 创建X坐标轴
-            self.axisX_ = QDateTimeAxis(self)   # 时间轴
-            # self.axisX_.setRange(QDateTime.currentDateTime().addSecs(-3600 * 24), QDateTime.currentDateTime())
-            self.axisX_.setRange(QDateTime.currentDateTime().addSecs(-36), QDateTime.currentDateTime())
-            self.axisX_.setMinorGridLineVisible(True)  # 显示小网格线
-            self.axisX_.setGridLineVisible(True)       # 显示大网格线
-            self.axisX_.setTickCount(11)  # 11个刻度
-            self.axisX_.setFormat("hh:mm:ss")
-            self.axisX_.setLabelsAngle(30)  # 标签倾斜角度
-            # 创建Y坐标轴
-            self.axisY_ = QValueAxis(self)
-            self.axisY_.setRange(-20, 50)  # 范围
-            self.axisY_.setMinorGridLineVisible(True)  # 显示小网格线
-            self.axisY_.setGridLineVisible(True)       # 显示大网格线
-            self.addAxis(self.axisX_, Qt.AlignBottom)
-            self.addAxis(self.axisY_, Qt.AlignLeft)
-
-            # 创建序列
-            self.series_at = QLineSeries(self, name="空气温度")
-            self.addSeries(self.series_at)
-            self.series_at.attachAxis(self.axisX_)    # 绑定X轴
-            self.series_at.attachAxis(self.axisY_)    # 绑定Y轴
-            self.points_at = []
-
-            self.series_st = QLineSeries(self, name="土壤温度")
-            self.addSeries(self.series_st)
-            self.series_st.attachAxis(self.axisX_)    # 绑定X轴
-            self.series_st.attachAxis(self.axisY_)    # 绑定Y轴
-            self.points_st = []
-
-        def update_data(self, json_dict):
-            at = json_dict.get('environment', {}).get('airTemperature', 0)
-            st = json_dict.get('environment', {}).get('soilTemperature', 0)
-            self.points_st.append(QPointF(QDateTime.currentDateTime().toMSecsSinceEpoch(), st))
-            self.series_st.replace(self.points_st)
-            # self.series_st.append(self.points_st)
-            self.points_at.append(QPointF(QDateTime.currentDateTime().toMSecsSinceEpoch(), at))
-            self.series_at.replace(self.points_at)
-            self.axisX_.setRange(QDateTime.currentDateTime().addSecs(-36), QDateTime.currentDateTime())
-
-    class ChartHum(QChart):
-        def __init__(self, parent=None):
-            super().__init__(parent)
-            self.setAnimationOptions(QChart.SeriesAnimations)  # 开启动画效果
-            self.setAnimationDuration(1000)  # 动画持续时间
+            self.tick_x = 36    # 时间轴刻度间隔, -3600 * 24
             # 创建X坐标轴
             self.axisX = QDateTimeAxis(self)   # 时间轴
-            # self.axisX_.setRange(QDateTime.currentDateTime().addSecs(-3600 * 24), QDateTime.currentDateTime())
-            self.axisX.setRange(QDateTime.currentDateTime().addSecs(-360), QDateTime.currentDateTime())
+            self.axisX.setRange(QDateTime.currentDateTime().addSecs(-self.tick_x), QDateTime.currentDateTime())
             self.axisX.setMinorGridLineVisible(True)  # 显示小网格线
             self.axisX.setGridLineVisible(True)       # 显示大网格线
             self.axisX.setTickCount(11)  # 11个刻度
-            self.axisX.setFormat("hh:mm:ss")
+            self.axisX.setFormat("mm:ss")
             self.axisX.setLabelsAngle(30)  # 标签倾斜角度
             # 创建Y坐标轴
             self.axisY = QValueAxis(self)
-            self.axisY.setRange(0, 100)  # 范围
+            # self.axisY.setRange(-20, 50)  # 范围
             self.axisY.setMinorGridLineVisible(True)  # 显示小网格线
             self.axisY.setGridLineVisible(True)       # 显示大网格线
             self.addAxis(self.axisX, Qt.AlignBottom)
             self.addAxis(self.axisY, Qt.AlignLeft)
+            self.points = []
 
+        def wheelEvent(self, event: QGraphicsSceneWheelEvent):
+            if event.modifiers() & Qt.ControlModifier:  # 检查是否按下了Ctrl键
+                if event.delta() > 0:  # 向上滚动
+                    self.zoomIn()
+                else:  # 向下滚动
+                    self.zoomOut()
+            # super().wheelEvent(event)   # 不传递给父类，避免滚轮事件影响父控件
+
+    class ChartTemp(BaseChart):
+        def __init__(self, parent=None):
+            super().__init__(parent)
+            # 创建序列
+            self.series_at = QLineSeries(self, name="空气温度")
+            self.addSeries(self.series_at)
+            self.series_at.attachAxis(self.axisX)    # 绑定X轴
+            self.series_at.attachAxis(self.axisY)    # 绑定Y轴
+
+            self.series_st = QLineSeries(self, name="土壤温度")
+            self.addSeries(self.series_st)
+            self.series_st.attachAxis(self.axisX)    # 绑定X轴
+            self.series_st.attachAxis(self.axisY)    # 绑定Y轴
+
+        def update_data(self, json_dict):
+            at = json_dict.get('environment', {}).get('airTemperature', 0)
+            st = json_dict.get('environment', {}).get('soilTemperature', 0)
+            self.points.append(at)
+            self.points.append(st)
+            self.series_at.append(QPointF(QDateTime.currentDateTime().toMSecsSinceEpoch(), at))
+            self.series_st.append(QPointF(QDateTime.currentDateTime().toMSecsSinceEpoch(), st))
+            self.axisX.setRange(QDateTime.currentDateTime().addSecs(-36), QDateTime.currentDateTime())
+            self.axisY.setRange(min(self.points) * 0.95, max(self.points) * 1.05)
+            if len(self.points) > self.tick_x * 2:  # 乘2是因为有两个序列
+                self.points.pop(0)  # 删掉第一个数据点，保持数据点数为tick_x的倍数
+                self.points.pop(0)  # 索引会变，所以删掉索引为0的点
+
+    class ChartHum(BaseChart):
+        def __init__(self, parent=None):
+            super().__init__(parent)
             # 创建序列
             self.series_ah = QLineSeries(self, name="空气湿度")
             self.addSeries(self.series_ah)
             self.series_ah.attachAxis(self.axisX)    # 绑定X轴
             self.series_ah.attachAxis(self.axisY)    # 绑定Y轴
-            self.points_ah = []
 
             self.series_sh = QLineSeries(self, name="土壤湿度")
             self.addSeries(self.series_sh)
             self.series_sh.attachAxis(self.axisX)    # 绑定X轴
             self.series_sh.attachAxis(self.axisY)    # 绑定Y轴
-            self.points_sh = []
 
+        # TODO: 图像Y轴的自动缩放，有点提前，导致波形峰值会上移，显示不全
         def update_data(self, json_dict):
             ah = json_dict.get('environment', {}).get('airHumidity', 0)
-            self.points_ah.append(QPointF(QDateTime.currentDateTime().toMSecsSinceEpoch(), ah))
-            self.series_ah.replace(self.points_ah)
             sh = json_dict.get('environment', {}).get('soilHumidity', 0)
-            self.points_sh.append(QPointF(QDateTime.currentDateTime().toMSecsSinceEpoch(), sh))
-            self.series_sh.replace(self.points_sh)
+            self.points.append(ah)
+            self.points.append(sh)
+            self.series_ah.append(QPointF(QDateTime.currentDateTime().toMSecsSinceEpoch(), ah))
+            self.series_sh.append(QPointF(QDateTime.currentDateTime().toMSecsSinceEpoch(), sh))
             self.axisX.setRange(QDateTime.currentDateTime().addSecs(-36), QDateTime.currentDateTime())
-
+            self.axisY.setRange(min(self.points) * 0.95, max(self.points) * 1.05)
+            print(len(self.points))
+            if len(self.points) > self.tick_x * 2:
+                self.points.pop(0)  # 删掉第一个数据点，保持数据点数为tick_x的倍数
+                self.points.pop(0)  # 索引会变，所以删掉索引为0的点
 
     def __init__(self, parent):
         super().__init__()
