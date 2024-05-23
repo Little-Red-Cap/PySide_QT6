@@ -7,6 +7,7 @@ class PageCommunication(QFrame):
     json_dict = Signal(dict)
 
     def __init__(self, parent_obj=None):
+        # TODO: 去掉parent_obj依赖
         super().__init__()
         self.parent_obj = parent_obj
         self.button_state = False
@@ -44,19 +45,25 @@ class PageCommunication(QFrame):
         self.settings.pushButton_port.clicked.connect(self.update_port_state)
         self.settings.lineEdit.textChanged.connect(self.text_changed)
         self.settings.pushButton_clear.clicked.connect(self.settings.textBrowser.clear)
+        self.json_end_flag = None
 
     def text_changed(self):
+        # TODO: 视频流地址应该用Single事件发送出去，由接收端决定存储变量，这里暂时用全局变量parent_obj
         self.parent_obj.web_url = "http://" + self.settings.lineEdit.text() + "/"
         self.parent_obj.stream_url = "http://" + self.settings.lineEdit.text() + ":81/stream"
 
     def data_received(self):
         data = self.serial.readAll()
         self.buffer += data.data()  # 将新数据追加到缓冲区
+        if self.settings.checkBox.isChecked():
+            # self.settings.textBrowser.append(data.toStdString())
+            self.settings.textBrowser.append(str(data.data()))
         while True:
             try:    # 尝试从缓冲区中解析一个完整的JSON对象, 假设换行符结尾
                 index = self.buffer.find(b'\n')
                 if index == -1:     # 没有找到换行符，说明可能是一个不完整的JSON对象，退出循环
                     break
+                self.json_end_flag = True  # 已经找到了换行符
                 json_data = self.buffer[:index].decode()  # 解码字节串为字符串
                 self.buffer = self.buffer[index+1:]  # 移除已解析的部分和换行符
                 # self.update_json.emit(json_data)    # 发送解析后的JSON数据
@@ -64,8 +71,9 @@ class PageCommunication(QFrame):
             except json.JSONDecodeError:
                 # 如果解析失败，可能是因为数据不完整，回到循环的开头等待更多数据
                 break
-        if self.settings.checkBox.isChecked():
-            self.settings.textBrowser.append(data.toStdString())
+            except UnicodeDecodeError:
+                if self.json_end_flag:
+                    self.buffer = b''  # 已经找到了换行符，却解析失败，说明之前的数据有问题，清空缓冲区
 
     def update_port(self):
         self.settings.comboBox_port.clear()

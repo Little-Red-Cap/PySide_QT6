@@ -5,7 +5,7 @@ import time
 import math
 import random
 
-# import numpy as np
+import numpy as np
 # import pandas as pd
 # import matplotlib.pyplot as plt
 
@@ -36,6 +36,9 @@ import cv2
 # from gluon import *  # web2py framework
 # from lida import *   # 自然语言处理NLP库
 
+# import bottle       # web框架
+# from bottle import Bottle, run
+# import pyqtgraph as pg
 
 import PySide6
 from PySide6.QtCore import *
