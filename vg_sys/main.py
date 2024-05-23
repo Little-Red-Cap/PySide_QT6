@@ -33,6 +33,7 @@ class GlobalData:
 
 class MainWidget(QFrame, PartAnimation):
     # https://doc.qt.io/qt-6/qt.html
+    # https://doc.qt.io/qtforpython-6/
     # https://blog.csdn.net/eiilpux17/article/details/124776295
     # https://blog.csdn.net/m0_48442491/article/details/128705183
     title = QObject.tr("物联网智慧蔬菜大棚管理系统", "Village Green System")

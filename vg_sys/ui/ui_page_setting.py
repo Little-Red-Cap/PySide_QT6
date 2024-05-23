@@ -711,7 +711,7 @@ class Ui_Frame(object):
         self.pushButton_refresh.setText(QCoreApplication.translate("Frame", u"\u5237\u65b0", None))
         self.groupBox.setTitle(QCoreApplication.translate("Frame", u"\u89c6\u9891\u8bbe\u7f6e", None))
         self.label_7.setText(QCoreApplication.translate("Frame", u"\u89c6\u9891\u6d41\u5730\u5740", None))
-        self.lineEdit.setText(QCoreApplication.translate("Frame", u"192.168.52.133", None))
+        self.lineEdit.setText(QCoreApplication.translate("Frame", u"192.168.65.133", None))
         self.label.setText(QCoreApplication.translate("Frame", u"\u64ad\u653e\u7b56\u7565", None))
         self.comboBox.setItemText(0, QCoreApplication.translate("Frame", u"\u5b9e\u65f6\u64ad\u653e", None))
         self.comboBox.setItemText(1, QCoreApplication.translate("Frame", u"\u5faa\u73af\u64ad\u653e", None))

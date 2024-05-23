@@ -41,12 +41,12 @@ class PageDataView(QFrame):
         def __init__(self, parent=None):
             super().__init__(parent)
             # 创建序列
-            self.series_at = QLineSeries(self, name="空气温度")
+            self.series_at = QSplineSeries(self, name="空气温度")
             self.addSeries(self.series_at)
             self.series_at.attachAxis(self.axisX)    # 绑定X轴
             self.series_at.attachAxis(self.axisY)    # 绑定Y轴
 
-            self.series_st = QLineSeries(self, name="土壤温度")
+            self.series_st = QSplineSeries(self, name="土壤温度")
             self.addSeries(self.series_st)
             self.series_st.attachAxis(self.axisX)    # 绑定X轴
             self.series_st.attachAxis(self.axisY)    # 绑定Y轴
@@ -68,12 +68,12 @@ class PageDataView(QFrame):
         def __init__(self, parent=None):
             super().__init__(parent)
             # 创建序列
-            self.series_ah = QLineSeries(self, name="空气湿度")
+            self.series_ah = QSplineSeries(self, name="空气湿度")
             self.addSeries(self.series_ah)
             self.series_ah.attachAxis(self.axisX)    # 绑定X轴
             self.series_ah.attachAxis(self.axisY)    # 绑定Y轴
 
-            self.series_sh = QLineSeries(self, name="土壤湿度")
+            self.series_sh = QSplineSeries(self, name="土壤湿度")
             self.addSeries(self.series_sh)
             self.series_sh.attachAxis(self.axisX)    # 绑定X轴
             self.series_sh.attachAxis(self.axisY)    # 绑定Y轴
@@ -88,23 +88,63 @@ class PageDataView(QFrame):
             self.series_sh.append(QPointF(QDateTime.currentDateTime().toMSecsSinceEpoch(), sh))
             self.axisX.setRange(QDateTime.currentDateTime().addSecs(-36), QDateTime.currentDateTime())
             self.axisY.setRange(min(self.points) * 0.95, max(self.points) * 1.05)
-            print(len(self.points))
+            # print(len(self.points))
             if len(self.points) > self.tick_x * 2:
                 self.points.pop(0)  # 删掉第一个数据点，保持数据点数为tick_x的倍数
                 self.points.pop(0)  # 索引会变，所以删掉索引为0的点
 
+    class ChartLight(BaseChart):
+        def __init__(self, parent=None):
+            super().__init__(parent)
+            self.series_li = QSplineSeries(self, name="光照强度")
+            self.series_li.dynamicPropertyNames()
+            self.axisX.hide()
+            self.axisY.setGridLineVisible(False)
+            self.addSeries(self.series_li)
+            self.series_li.attachAxis(self.axisX)    # 绑定X轴
+            self.series_li.attachAxis(self.axisY)    # 绑定Y轴
+
+        def update_data(self, json_dict):
+            li = json_dict.get('environment', {}).get('lightIntensity', 0)
+            self.points.append(li)
+            self.series_li.append(QPointF(QDateTime.currentDateTime().toMSecsSinceEpoch(), float(li)))
+            self.axisX.setRange(QDateTime.currentDateTime().addSecs(-36), QDateTime.currentDateTime())
+            self.axisY.setRange(min(self.points) * 0.95, max(self.points) * 1.05)
+            if len(self.points) > self.tick_x * 2:  # 乘2是因为有两个序列
+                self.points.pop(0)  # 删掉第一个数据点，保持数据点数为tick_x的倍数
+
+    class ChartPressure(BaseChart):
+        def __init__(self, parent=None):
+            super().__init__(parent)
+            self.series_ap = QSplineSeries(self, name="大气压力")
+            self.axisX.hide()
+            self.axisY.setGridLineVisible(False)
+            self.addSeries(self.series_ap)
+            self.series_ap.attachAxis(self.axisX)    # 绑定X轴
+            self.series_ap.attachAxis(self.axisY)    # 绑定Y轴
+
+        def update_data(self, json_dict):
+            ap = json_dict.get('environment', {}).get('airPressure', 0)
+            self.points.append(ap)
+            self.series_ap.append(QPointF(QDateTime.currentDateTime().toMSecsSinceEpoch(), float(ap)))
+            self.axisX.setRange(QDateTime.currentDateTime().addSecs(-36), QDateTime.currentDateTime())
+            self.axisY.setRange(min(self.points) * 0.95, max(self.points) * 1.05)
+            if len(self.points) > self.tick_x * 2:  # 乘2是因为有两个序列
+                self.points.pop(0)  # 删掉第一个数据点，保持数据点数为tick_x的倍数
+
     def __init__(self, parent):
-        super().__init__()
+        super().__init__(parent)
         self.data_view = Ui_data_view()
         self.data_view.setupUi(self)
         self.data_view.label_img_at.setPixmap(gf_to_icon("img/大气温度.svg", QSize(50, 50)))
         self.data_view.label_img_ah.setPixmap(gf_to_icon("img/大气湿度.svg", QSize(50, 50)))
         self.data_view.label_img_st.setPixmap(gf_to_icon("img/土壤温度.svg", QSize(50, 50)))
         self.data_view.label_img_sh.setPixmap(gf_to_icon("img/土壤湿度.svg", QSize(50, 50)))
-        self.data_view.label_img_dev1.setPixmap(gf_to_icon("img/水泵.svg", QSize(50, 50)))
-        self.data_view.label_img_dev2.setPixmap(gf_to_icon("img/fan.svg", QSize(50, 50)))
-        self.data_view.label_img_dev3.setPixmap(gf_to_icon("img/fan.svg", QSize(50, 50)))
-        self.data_view.label_img_dev4.setPixmap(gf_to_icon("img/fan.svg", QSize(50, 50)))
+        self.data_view.label_img_waterPump.setPixmap(gf_to_icon("img/水泵.svg", QSize(50, 50)))
+        self.data_view.label_img_fan.setPixmap(gf_to_icon("img/fan.svg", QSize(50, 50)))
+        self.data_view.label_img_light.setPixmap(gf_to_icon("img/lightbulb-idea-person.svg", QSize(50, 50)))
+        self.data_view.label_img_InsectKillingLamp.setPixmap(gf_to_icon("img/fan.svg", QSize(50, 50)))
+        self.data_view.label_img_beep.setPixmap(gf_to_icon("img/fan.svg", QSize(50, 50)))
         self.data_view.label_img_li.setPixmap(gf_to_icon("img/lighting.svg", QSize(50, 50)))
         self.data_view.label_img_ap.setPixmap(gf_to_icon("img/大气压力.svg", QSize(60, 60)))
         self.data_view.label_time_img.setPixmap(gf_to_icon("img/calendar-date.svg", QSize(50, 50)))
@@ -112,10 +152,15 @@ class PageDataView(QFrame):
         self.chart_temp = self.ChartTemp()
         self.data_view.graphicsView_t.setChart(self.chart_temp)
         self.data_view.graphicsView_t.setRenderHint(QPainter.Antialiasing)  # 抗锯齿
-        # self.data_view.graphicsView_h.setChart(PageManage())
         self.chart_hum = self.ChartHum()
         self.data_view.graphicsView_h.setChart(self.chart_hum)
         self.data_view.graphicsView_h.setRenderHint(QPainter.Antialiasing)  # 抗锯齿
+        self.chart_light = self.ChartLight()
+        self.data_view.graphicsView_li.setChart(self.chart_light)
+        self.data_view.graphicsView_li.setRenderHint(QPainter.Antialiasing)  # 抗锯齿
+        self.chart_pressure = self.ChartPressure()
+        self.data_view.graphicsView_ap.setChart(self.chart_pressure)
+        self.data_view.graphicsView_ap.setRenderHint(QPainter.Antialiasing)  # 抗锯齿
 
         #动态列表
         #https://www.bilibili.com/read/cv34228805/
@@ -142,18 +187,21 @@ class PageDataView(QFrame):
         self.data_view.label_time_week.setText(self.week[QDateTime.currentDateTime().toString("ddd")])
 
     def update_data_view(self, json_dict):
-        self.data_view.label_val_at.setText(str(json_dict.get('environment', {}).get('airTemperature', '')) + '°C')
-        self.data_view.label_val_ah.setText(str(json_dict.get('environment', {}).get('airHumidity', '')) + '%RH')
-        self.data_view.label_val_st.setText(str(json_dict.get('environment', {}).get('soilTemperature', '')) + '°C')
-        self.data_view.label_val_sh.setText(str(json_dict.get('environment', {}).get('soilHumidity', '')) + '%RH')
-        self.data_view.label_val_ap.setText(str(json_dict.get('environment', {}).get('airPressure', '')) + 'hPa')
-        self.data_view.label_val_li.setText(str(json_dict.get('environment', {}).get('lightIntensity', '')) + 'lx')
-        self.data_view.label_state_dev1.setText(str(json_dict.get('devices', {}).get('waterPump', {}).get('status', '')))
-        self.data_view.label_state_dev2.setText(str(json_dict.get('devices', {}).get('fan', {}).get('status', '')))
-        self.data_view.label_state_dev3.setText(str(json_dict.get('devices', {}).get('light', {}).get('status', '')))
-        self.data_view.label_state_dev4.setText(str(json_dict.get('devices', {}).get('InsectKillingLamp', {}).get('status', '')))
+        self.data_view.label_val_at.setText(f"{json_dict.get('environment', {}).get('airTemperature', ''):.2f}°C")
+        self.data_view.label_val_ah.setText(f"{json_dict.get('environment', {}).get('airHumidity', ''):.2f}%RH")
+        self.data_view.label_val_st.setText(f"{json_dict.get('environment', {}).get('soilTemperature', ''):.2f}°C")
+        self.data_view.label_val_sh.setText(f"{json_dict.get('environment', {}).get('soilHumidity', ''):.2f}%RH")
+        self.data_view.label_val_ap.setText(f"{json_dict.get('environment', {}).get('airPressure', ''):.2f}hPa")
+        self.data_view.label_val_li.setText(f"{json_dict.get('environment', {}).get('lightIntensity', ''):.2f}lx")
+        self.data_view.label_state_waterPump.setText(str(json_dict.get('devices', {}).get('waterPump', {}).get('status', '')).upper())
+        self.data_view.label_state_fan.setText(str(json_dict.get('devices', {}).get('fan', {}).get('status', '')).upper())
+        self.data_view.label_state_light.setText(str(json_dict.get('devices', {}).get('light', {}).get('status', '')).upper())
+        self.data_view.label_state_InsectKillingLamp.setText(str(json_dict.get('devices', {}).get('InsectKillingLamp', {}).get('status', '')).upper())
+        self.data_view.label_state_beep.setText(str(json_dict.get('devices', {}).get('beep', {}).get('status', '')).upper())
         self.chart_temp.update_data(json_dict)
         self.chart_hum.update_data(json_dict)
+        self.chart_light.update_data(json_dict)
+        self.chart_pressure.update_data(json_dict)
 
     def update_chart(self, data):
         pass
