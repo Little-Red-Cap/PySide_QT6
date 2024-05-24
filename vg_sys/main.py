@@ -36,6 +36,7 @@ class MainWidget(QFrame, PartAnimation):
     # https://doc.qt.io/qtforpython-6/
     # https://blog.csdn.net/eiilpux17/article/details/124776295
     # https://blog.csdn.net/m0_48442491/article/details/128705183
+    # https://blog.csdn.net/GoForwardToStep/article/details/68938965
     title = QObject.tr("物联网智慧蔬菜大棚管理系统", "Village Green System")
     icon_path = "img/hand-holding-seedling.svg"
 
@@ -46,7 +47,6 @@ class MainWidget(QFrame, PartAnimation):
         self.setWindowIcon(gf_to_icon(self.icon_path))
         # apply_stylesheet(self, theme='theme/dark.xml')
         # apply_stylesheet(self, theme='theme/light.xml')
-        self.setWindowFlag(Qt.WindowStaysOnTopHint)
         self.page_left = PageLeft(self)     # 46 32
         self.page_communication = PageCommunication(self)
         self.page_data_view = PageDataView(self)
@@ -60,6 +60,7 @@ class MainWidget(QFrame, PartAnimation):
         self.page_left.page_index_changed.connect(self.stacked_pages.setCurrentIndex)  # 将左、右侧页面的切换信号作关联
         # self.page_communication.update_json.connect(self.global_data.update_josn_data)  # 接收Json数据
         self.page_communication.json_dict.connect(self.page_data_view.update_data_view)
+        self.page_data_view.dev_message.connect(self.page_communication.send_data)
         layout = QHBoxLayout(self)
         layout.setSpacing(0)
         layout.setContentsMargins(3, 0, 0, 0)
@@ -70,8 +71,15 @@ class MainWidget(QFrame, PartAnimation):
         self.opacity_step = 0.01  # 步长
         self.window_infos = []
         self.stacked_pages.setCurrentIndex(1)
+        self.is_on_top = False
+        self.show_event_flag = False
 
     def keyPressEvent(self, event: QKeyEvent):
+        if event.key() == Qt.Key_F10:
+            self.is_on_top = not self.is_on_top
+            self.setWindowFlag(Qt.WindowStaysOnTopHint, self.is_on_top)
+            self.show()
+
         if event.key() == Qt.Key_F12:
             if self.page_left.isHidden() and self.isFullScreen():
                 self.page_left.show()
@@ -104,11 +112,13 @@ class MainWidget(QFrame, PartAnimation):
             self.setWindowOpacity(self.opacity_value)
         super().wheelEvent(event)
 
-    # def showEvent(self, event) -> None:
-    #     self.show_animation()
-    #
-    # def closeEvent(self, event):
-    #     self.close_animation(event)
+    def showEvent(self, event) -> None:
+        if not self.show_event_flag:
+            self.show_animation()
+            self.show_event_flag = True
+
+    def closeEvent(self, event):
+        self.close_animation(event)
 
 
 if __name__ == "__main__":

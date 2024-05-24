@@ -20,6 +20,21 @@
    <item row="0" column="2" rowspan="3">
     <widget class="QWidget" name="widget_3" native="true">
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>9</number>
+      </property>
       <item>
        <widget class="QFrame" name="frame">
         <property name="frameShape">
@@ -360,7 +375,14 @@
     <widget class="QWidget" name="widget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QFrame" name="frame_16">
+       <widget class="QPushButton" name="pushButton_ctrl">
+        <property name="text">
+         <string>自动</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="frame_waterPump">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -400,7 +422,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="frame_15">
+       <widget class="QFrame" name="frame_fan">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -440,7 +462,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="frame_14">
+       <widget class="QFrame" name="frame_light">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -480,7 +502,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="frame_17">
+       <widget class="QFrame" name="frame_InsectKillingLamp">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -520,7 +542,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="frame_18">
+       <widget class="QFrame" name="frame_beep">
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>

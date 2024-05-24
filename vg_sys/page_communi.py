@@ -96,5 +96,11 @@ class PageCommunication(QFrame):
                 self.settings.pushButton_port.setText("关闭串口")
             else:
                 QMessageBox.critical(self, "错误", "打开串口失败！")
+
+    def send_data(self, str_data):
+        if self.serial.isOpen():
             # data = QByteArray(b"555")
-            # self.serial.write(data)
+            self.serial.write(str_data.encode())
+        # else:
+        #     QMessageBox.warning(self, "警告", "串口未打开！")
+        #     return

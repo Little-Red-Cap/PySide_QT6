@@ -2,8 +2,9 @@ from import_modules import *
 from ui.ui_page_chart import *
 from py_gf.render_svg_to_pixmap import gf_to_icon
 
-#1;0;0;1;1;1;33;44;55;66;
+
 class PageDataView(QFrame):
+    dev_message = Signal(str)
     week = {"Mon": "星期一", "Tue": "星期二", "Wed": "星期三", "Thu": "星期四", "Fri": "星期五", "Sat": "星期六", "Sun": "星期日"}
 
     class BaseChart(QChart):
@@ -103,6 +104,7 @@ class PageDataView(QFrame):
             self.addSeries(self.series_li)
             self.series_li.attachAxis(self.axisX)    # 绑定X轴
             self.series_li.attachAxis(self.axisY)    # 绑定Y轴
+            # self.setAutoFillBackground(True)
 
         def update_data(self, json_dict):
             li = json_dict.get('environment', {}).get('lightIntensity', 0)
@@ -132,6 +134,17 @@ class PageDataView(QFrame):
             if len(self.points) > self.tick_x * 2:  # 乘2是因为有两个序列
                 self.points.pop(0)  # 删掉第一个数据点，保持数据点数为tick_x的倍数
 
+        def mousePressEvent(self, event):
+            # Ctrl+左键点击 显示图片
+            if event.button() == Qt.LeftButton and event.modifiers() & Qt.ControlModifier:
+                dialog = QDialog()  # 创建一个临时对话框来显示QLabel
+                label = QLabel(dialog)    # 创建一个QLabel来显示图片
+                label.setPixmap(QPixmap("img/PixPin.png"))
+                layout = QVBoxLayout(dialog)
+                layout.addWidget(label)
+                dialog.exec()  # 显示对话框，等待用户关闭
+            super().mousePressEvent(event)  # 确保其他事件处理正常进行
+
     def __init__(self, parent):
         super().__init__(parent)
         self.data_view = Ui_data_view()
@@ -143,8 +156,8 @@ class PageDataView(QFrame):
         self.data_view.label_img_waterPump.setPixmap(gf_to_icon("img/水泵.svg", QSize(50, 50)))
         self.data_view.label_img_fan.setPixmap(gf_to_icon("img/fan.svg", QSize(50, 50)))
         self.data_view.label_img_light.setPixmap(gf_to_icon("img/lightbulb-idea-person.svg", QSize(50, 50)))
-        self.data_view.label_img_InsectKillingLamp.setPixmap(gf_to_icon("img/fan.svg", QSize(50, 50)))
-        self.data_view.label_img_beep.setPixmap(gf_to_icon("img/fan.svg", QSize(50, 50)))
+        self.data_view.label_img_InsectKillingLamp.setPixmap(gf_to_icon("img/杀虫灯.svg", QSize(50, 50)))
+        self.data_view.label_img_beep.setPixmap(gf_to_icon("img/报警器.svg", QSize(50, 50)))
         self.data_view.label_img_li.setPixmap(gf_to_icon("img/lighting.svg", QSize(50, 50)))
         self.data_view.label_img_ap.setPixmap(gf_to_icon("img/大气压力.svg", QSize(60, 60)))
         self.data_view.label_time_img.setPixmap(gf_to_icon("img/calendar-date.svg", QSize(50, 50)))
@@ -161,6 +174,16 @@ class PageDataView(QFrame):
         self.chart_pressure = self.ChartPressure()
         self.data_view.graphicsView_ap.setChart(self.chart_pressure)
         self.data_view.graphicsView_ap.setRenderHint(QPainter.Antialiasing)  # 抗锯齿
+
+        self.data_view.button_fan.animation.finished.connect(lambda: self.send_command(self.data_view.button_fan))
+        self.data_view.button_waterPump.animation.finished.connect(lambda: self.send_command(self.data_view.button_waterPump))
+        self.data_view.button_light.animation.finished.connect(lambda: self.send_command(self.data_view.button_light))
+        self.data_view.button_InsectKillingLamp.animation.finished.connect(lambda: self.send_command(self.data_view.button_InsectKillingLamp))
+        self.data_view.button_beep.animation.finished.connect(lambda: self.send_command(self.data_view.button_beep))
+        self.data_view.pushButton_ctrl.clicked.connect(lambda: self.send_command(self.data_view.pushButton_ctrl))
+        self.pushButton_ctrl_state = False  # default state of pushButton_ctrl: auto mode
+        self.dev_info_list = [0, 0, 0, 0, 0, 0, 33, 20, 500, 0]
+        # self.dev_message.connect(lambda msg: print("msg: " + msg))
 
         #动态列表
         #https://www.bilibili.com/read/cv34228805/
@@ -180,6 +203,24 @@ class PageDataView(QFrame):
         self.timer.setInterval(1000)  # 1000ms = 1s
         self.timer.timeout.connect(self.update_time)
         self.timer.start()
+
+    def send_command(self, obj):
+        if obj.objectName() == "pushButton_ctrl":
+            self.pushButton_ctrl_state = not self.pushButton_ctrl_state
+            self.data_view.pushButton_ctrl.setText("当前模式: 手动" if self.pushButton_ctrl_state else "当前模式: 自动")
+            self.dev_info_list[0] = 1 if self.pushButton_ctrl_state else 0
+        else:
+            names = ["pushButton_ctrl", "button_waterPump", "button_fan", "button_light", "button_InsectKillingLamp", "button_beep"]
+            try:
+                index = names.index(obj.objectName())
+                self.dev_info_list[index] = 1 if obj.checked else 0
+            except ValueError:
+                pass
+            # self.dev_info_list[int(obj.objectName().split("_")[1])] = obj.checked()  # name: button_1 -> 1
+            formatted_lst = [int(i) if isinstance(i, bool) else str(i) for i in self.dev_info_list]  # 格式化数据
+            formatted_str = ';'.join(formatted_lst)  # 使用分号作为分隔符连接字符串
+            formatted_str += ';'
+            self.dev_message.emit(formatted_str)
 
     def update_time(self):
         self.data_view.label_time_date.setText(QDateTime.currentDateTime().toString("yyyy-MM-dd"))

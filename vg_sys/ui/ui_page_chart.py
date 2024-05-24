@@ -17,7 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
-    QLabel, QSizePolicy, QVBoxLayout, QWidget)
+    QLabel, QPushButton, QSizePolicy, QVBoxLayout,
+    QWidget)
 
 from part_switch_button import SwitchButton
 
@@ -36,7 +37,9 @@ class Ui_data_view(object):
         self.widget_3 = QWidget(data_view)
         self.widget_3.setObjectName(u"widget_3")
         self.verticalLayout = QVBoxLayout(self.widget_3)
+        self.verticalLayout.setSpacing(6)
         self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(0, 9, 0, 9)
         self.frame = QFrame(self.widget_3)
         self.frame.setObjectName(u"frame")
         self.frame.setFrameShape(QFrame.StyledPanel)
@@ -261,150 +264,155 @@ class Ui_data_view(object):
         self.widget.setObjectName(u"widget")
         self.verticalLayout_2 = QVBoxLayout(self.widget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.frame_16 = QFrame(self.widget)
-        self.frame_16.setObjectName(u"frame_16")
-        self.frame_16.setFrameShape(QFrame.StyledPanel)
-        self.frame_16.setFrameShadow(QFrame.Raised)
-        self.gridLayout_8 = QGridLayout(self.frame_16)
+        self.pushButton_ctrl = QPushButton(self.widget)
+        self.pushButton_ctrl.setObjectName(u"pushButton_ctrl")
+
+        self.verticalLayout_2.addWidget(self.pushButton_ctrl)
+
+        self.frame_waterPump = QFrame(self.widget)
+        self.frame_waterPump.setObjectName(u"frame_waterPump")
+        self.frame_waterPump.setFrameShape(QFrame.StyledPanel)
+        self.frame_waterPump.setFrameShadow(QFrame.Raised)
+        self.gridLayout_8 = QGridLayout(self.frame_waterPump)
         self.gridLayout_8.setObjectName(u"gridLayout_8")
-        self.label_type_waterPump = QLabel(self.frame_16)
+        self.label_type_waterPump = QLabel(self.frame_waterPump)
         self.label_type_waterPump.setObjectName(u"label_type_waterPump")
 
         self.gridLayout_8.addWidget(self.label_type_waterPump, 0, 1, 1, 1)
 
-        self.label_state_waterPump = QLabel(self.frame_16)
+        self.label_state_waterPump = QLabel(self.frame_waterPump)
         self.label_state_waterPump.setObjectName(u"label_state_waterPump")
 
         self.gridLayout_8.addWidget(self.label_state_waterPump, 1, 1, 1, 1)
 
-        self.label_img_waterPump = QLabel(self.frame_16)
+        self.label_img_waterPump = QLabel(self.frame_waterPump)
         self.label_img_waterPump.setObjectName(u"label_img_waterPump")
 
         self.gridLayout_8.addWidget(self.label_img_waterPump, 0, 0, 2, 1)
 
-        self.button_waterPump = SwitchButton(self.frame_16)
+        self.button_waterPump = SwitchButton(self.frame_waterPump)
         self.button_waterPump.setObjectName(u"button_waterPump")
 
         self.gridLayout_8.addWidget(self.button_waterPump, 0, 3, 2, 1)
 
 
-        self.verticalLayout_2.addWidget(self.frame_16)
+        self.verticalLayout_2.addWidget(self.frame_waterPump)
 
-        self.frame_15 = QFrame(self.widget)
-        self.frame_15.setObjectName(u"frame_15")
-        self.frame_15.setFrameShape(QFrame.StyledPanel)
-        self.frame_15.setFrameShadow(QFrame.Raised)
-        self.gridLayout_7 = QGridLayout(self.frame_15)
+        self.frame_fan = QFrame(self.widget)
+        self.frame_fan.setObjectName(u"frame_fan")
+        self.frame_fan.setFrameShape(QFrame.StyledPanel)
+        self.frame_fan.setFrameShadow(QFrame.Raised)
+        self.gridLayout_7 = QGridLayout(self.frame_fan)
         self.gridLayout_7.setObjectName(u"gridLayout_7")
-        self.label_type_fan = QLabel(self.frame_15)
+        self.label_type_fan = QLabel(self.frame_fan)
         self.label_type_fan.setObjectName(u"label_type_fan")
 
         self.gridLayout_7.addWidget(self.label_type_fan, 0, 1, 1, 1)
 
-        self.label_state_fan = QLabel(self.frame_15)
+        self.label_state_fan = QLabel(self.frame_fan)
         self.label_state_fan.setObjectName(u"label_state_fan")
 
         self.gridLayout_7.addWidget(self.label_state_fan, 1, 1, 1, 1)
 
-        self.label_img_fan = QLabel(self.frame_15)
+        self.label_img_fan = QLabel(self.frame_fan)
         self.label_img_fan.setObjectName(u"label_img_fan")
 
         self.gridLayout_7.addWidget(self.label_img_fan, 0, 0, 2, 1)
 
-        self.button_fan = SwitchButton(self.frame_15)
+        self.button_fan = SwitchButton(self.frame_fan)
         self.button_fan.setObjectName(u"button_fan")
 
         self.gridLayout_7.addWidget(self.button_fan, 0, 3, 2, 1)
 
 
-        self.verticalLayout_2.addWidget(self.frame_15)
+        self.verticalLayout_2.addWidget(self.frame_fan)
 
-        self.frame_14 = QFrame(self.widget)
-        self.frame_14.setObjectName(u"frame_14")
-        self.frame_14.setFrameShape(QFrame.StyledPanel)
-        self.frame_14.setFrameShadow(QFrame.Raised)
-        self.gridLayout_6 = QGridLayout(self.frame_14)
+        self.frame_light = QFrame(self.widget)
+        self.frame_light.setObjectName(u"frame_light")
+        self.frame_light.setFrameShape(QFrame.StyledPanel)
+        self.frame_light.setFrameShadow(QFrame.Raised)
+        self.gridLayout_6 = QGridLayout(self.frame_light)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
-        self.label_tyoe_light = QLabel(self.frame_14)
+        self.label_tyoe_light = QLabel(self.frame_light)
         self.label_tyoe_light.setObjectName(u"label_tyoe_light")
 
         self.gridLayout_6.addWidget(self.label_tyoe_light, 0, 1, 1, 1)
 
-        self.label_state_light = QLabel(self.frame_14)
+        self.label_state_light = QLabel(self.frame_light)
         self.label_state_light.setObjectName(u"label_state_light")
 
         self.gridLayout_6.addWidget(self.label_state_light, 1, 1, 1, 1)
 
-        self.label_img_light = QLabel(self.frame_14)
+        self.label_img_light = QLabel(self.frame_light)
         self.label_img_light.setObjectName(u"label_img_light")
 
         self.gridLayout_6.addWidget(self.label_img_light, 0, 0, 2, 1)
 
-        self.button_light = SwitchButton(self.frame_14)
+        self.button_light = SwitchButton(self.frame_light)
         self.button_light.setObjectName(u"button_light")
 
         self.gridLayout_6.addWidget(self.button_light, 0, 3, 2, 1)
 
 
-        self.verticalLayout_2.addWidget(self.frame_14)
+        self.verticalLayout_2.addWidget(self.frame_light)
 
-        self.frame_17 = QFrame(self.widget)
-        self.frame_17.setObjectName(u"frame_17")
-        self.frame_17.setFrameShape(QFrame.StyledPanel)
-        self.frame_17.setFrameShadow(QFrame.Raised)
-        self.gridLayout_9 = QGridLayout(self.frame_17)
+        self.frame_InsectKillingLamp = QFrame(self.widget)
+        self.frame_InsectKillingLamp.setObjectName(u"frame_InsectKillingLamp")
+        self.frame_InsectKillingLamp.setFrameShape(QFrame.StyledPanel)
+        self.frame_InsectKillingLamp.setFrameShadow(QFrame.Raised)
+        self.gridLayout_9 = QGridLayout(self.frame_InsectKillingLamp)
         self.gridLayout_9.setObjectName(u"gridLayout_9")
-        self.label_type_InsectKillingLamp = QLabel(self.frame_17)
+        self.label_type_InsectKillingLamp = QLabel(self.frame_InsectKillingLamp)
         self.label_type_InsectKillingLamp.setObjectName(u"label_type_InsectKillingLamp")
 
         self.gridLayout_9.addWidget(self.label_type_InsectKillingLamp, 0, 1, 1, 1)
 
-        self.label_state_InsectKillingLamp = QLabel(self.frame_17)
+        self.label_state_InsectKillingLamp = QLabel(self.frame_InsectKillingLamp)
         self.label_state_InsectKillingLamp.setObjectName(u"label_state_InsectKillingLamp")
 
         self.gridLayout_9.addWidget(self.label_state_InsectKillingLamp, 1, 1, 1, 1)
 
-        self.label_img_InsectKillingLamp = QLabel(self.frame_17)
+        self.label_img_InsectKillingLamp = QLabel(self.frame_InsectKillingLamp)
         self.label_img_InsectKillingLamp.setObjectName(u"label_img_InsectKillingLamp")
 
         self.gridLayout_9.addWidget(self.label_img_InsectKillingLamp, 0, 0, 2, 1)
 
-        self.button_InsectKillingLamp = SwitchButton(self.frame_17)
+        self.button_InsectKillingLamp = SwitchButton(self.frame_InsectKillingLamp)
         self.button_InsectKillingLamp.setObjectName(u"button_InsectKillingLamp")
 
         self.gridLayout_9.addWidget(self.button_InsectKillingLamp, 0, 3, 2, 1)
 
 
-        self.verticalLayout_2.addWidget(self.frame_17)
+        self.verticalLayout_2.addWidget(self.frame_InsectKillingLamp)
 
-        self.frame_18 = QFrame(self.widget)
-        self.frame_18.setObjectName(u"frame_18")
-        self.frame_18.setFrameShape(QFrame.StyledPanel)
-        self.frame_18.setFrameShadow(QFrame.Raised)
-        self.gridLayout_10 = QGridLayout(self.frame_18)
+        self.frame_beep = QFrame(self.widget)
+        self.frame_beep.setObjectName(u"frame_beep")
+        self.frame_beep.setFrameShape(QFrame.StyledPanel)
+        self.frame_beep.setFrameShadow(QFrame.Raised)
+        self.gridLayout_10 = QGridLayout(self.frame_beep)
         self.gridLayout_10.setObjectName(u"gridLayout_10")
-        self.label_type_beep = QLabel(self.frame_18)
+        self.label_type_beep = QLabel(self.frame_beep)
         self.label_type_beep.setObjectName(u"label_type_beep")
 
         self.gridLayout_10.addWidget(self.label_type_beep, 0, 1, 1, 1)
 
-        self.label_state_beep = QLabel(self.frame_18)
+        self.label_state_beep = QLabel(self.frame_beep)
         self.label_state_beep.setObjectName(u"label_state_beep")
 
         self.gridLayout_10.addWidget(self.label_state_beep, 1, 1, 1, 1)
 
-        self.label_img_beep = QLabel(self.frame_18)
+        self.label_img_beep = QLabel(self.frame_beep)
         self.label_img_beep.setObjectName(u"label_img_beep")
 
         self.gridLayout_10.addWidget(self.label_img_beep, 0, 0, 2, 1)
 
-        self.button_beep = SwitchButton(self.frame_18)
+        self.button_beep = SwitchButton(self.frame_beep)
         self.button_beep.setObjectName(u"button_beep")
 
         self.gridLayout_10.addWidget(self.button_beep, 0, 3, 2, 1)
 
 
-        self.verticalLayout_2.addWidget(self.frame_18)
+        self.verticalLayout_2.addWidget(self.frame_beep)
 
 
         self.gridLayout_13.addWidget(self.widget, 0, 3, 3, 1)
@@ -439,6 +447,7 @@ class Ui_data_view(object):
         self.label_img_sh.setText(QCoreApplication.translate("data_view", u"\u56fe\u6807", None))
         self.label_val_sh.setText(QCoreApplication.translate("data_view", u"N/A", None))
         self.label_title_sh.setText(QCoreApplication.translate("data_view", u"\u571f\u58e4\u6e7f\u5ea6", None))
+        self.pushButton_ctrl.setText(QCoreApplication.translate("data_view", u"\u81ea\u52a8", None))
         self.label_type_waterPump.setText(QCoreApplication.translate("data_view", u"\u704c\u6e89\u6c34\u6cf5", None))
         self.label_state_waterPump.setText(QCoreApplication.translate("data_view", u"\u8bbe\u5907\u72b6\u6001", None))
         self.label_img_waterPump.setText(QCoreApplication.translate("data_view", u"\u56fe\u6807", None))
