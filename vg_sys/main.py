@@ -39,6 +39,7 @@ class MainWidget(QFrame, PartAnimation):
     # https://blog.csdn.net/GoForwardToStep/article/details/68938965
     title = QObject.tr("物联网智慧蔬菜大棚管理系统", "Village Green System")
     icon_path = "img/hand-holding-seedling.svg"
+    open_tab = Signal()
 
     def __init__(self):
         super().__init__()
@@ -61,6 +62,8 @@ class MainWidget(QFrame, PartAnimation):
         # self.page_communication.update_json.connect(self.global_data.update_josn_data)  # 接收Json数据
         self.page_communication.json_dict.connect(self.page_data_view.update_data_view)
         self.page_data_view.dev_message.connect(self.page_communication.send_data)
+        self.page_manage.thresholds.connect(self.page_data_view.update_thresholds)
+        self.open_tab.connect(lambda : print("open tab"))
         layout = QHBoxLayout(self)
         layout.setSpacing(0)
         layout.setContentsMargins(3, 0, 0, 0)
@@ -75,7 +78,7 @@ class MainWidget(QFrame, PartAnimation):
         self.show_event_flag = False
 
     def keyPressEvent(self, event: QKeyEvent):
-        if event.key() == Qt.Key_F10:
+        if event.key() == Qt.Key_F10
             self.is_on_top = not self.is_on_top
             self.setWindowFlag(Qt.WindowStaysOnTopHint, self.is_on_top)
             self.show()
@@ -96,6 +99,10 @@ class MainWidget(QFrame, PartAnimation):
             self.stacked_pages.setCurrentIndex((self.stacked_pages.currentIndex() + 1) % self.stacked_pages.count())
         elif event.modifiers() & Qt.ControlModifier and event.key() == Qt.Key_QuoteLeft:
             self.page_left.show() if self.page_left.isHidden() else self.page_left.setHidden(True)
+        elif event.modifiers() & Qt.ControlModifier and event.key() == Qt.Key_T:
+            self.open_tab.emit()
+        elif event.modifiers() & Qt.ControlModifier and event.key() == Qt.Key_W:
+            self.close()
         else:
             super().keyPressEvent(event)
 

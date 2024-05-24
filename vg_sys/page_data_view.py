@@ -145,6 +145,42 @@ class PageDataView(QFrame):
                 dialog.exec()  # 显示对话框，等待用户关闭
             super().mousePressEvent(event)  # 确保其他事件处理正常进行
 
+    class WaveformWidget(QWidget):
+        # TODO: 实现波形显示
+        # https://mp.weixin.qq.com/s/xDf5Mlg2VyeFR3zwqQHTZQ?poc_token=HAyDS2ajf4wvpPm7v6ZyaqSl-gxxq5--Xe7o154g
+        def __init__(self, parent=None):
+            super().__init__(parent)
+            # self.setAttribute(Qt.WA_StyledBackground, True)  # 设置背景为透明
+            self.setAttribute(Qt.WA_TranslucentBackground, True)  # 设置背景透明
+            self.lineColor = Qt.black       # 折线颜色
+            self.waveformData = []          # 存储波形数据点
+            self.normalizedData = []        # 归一化后的数据点
+            self.gradientThreshold = 20     # 渐变起始高度
+
+        def saveImage(self, filename):
+            pass
+
+        def setGradientThreshold(self, threshold):
+            pass
+
+        def setLineColor(self, color):
+            pass
+
+        def setWaveformData(self, originalData):
+            #
+            pass
+
+        def normalizeData(self):
+            # 归一化数据
+            pass
+
+        def resizeEvent(self, event: QResizeEvent):
+            pass
+
+        def paintEvent(self, event: QPaintEvent):
+            pass
+
+
     def __init__(self, parent):
         super().__init__(parent)
         self.data_view = Ui_data_view()
@@ -182,7 +218,7 @@ class PageDataView(QFrame):
         self.data_view.button_beep.animation.finished.connect(lambda: self.send_command(self.data_view.button_beep))
         self.data_view.pushButton_ctrl.clicked.connect(lambda: self.send_command(self.data_view.pushButton_ctrl))
         self.pushButton_ctrl_state = False  # default state of pushButton_ctrl: auto mode
-        self.dev_info_list = [0, 0, 0, 0, 0, 0, 33, 20, 500, 0]
+        self.dev_info_list = [0, 0, 0, 0, 0, 0, 33, 20, 500, 0]  # en, s1, s2, s3, s4, s5, at, ah, li, ap
         # self.dev_message.connect(lambda msg: print("msg: " + msg))
 
         #动态列表
@@ -221,6 +257,10 @@ class PageDataView(QFrame):
             formatted_str = ';'.join(formatted_lst)  # 使用分号作为分隔符连接字符串
             formatted_str += ';'
             self.dev_message.emit(formatted_str)
+
+    def update_thresholds(self, data):
+        self.dev_info_list[6: 9] = data[0: 3]  # at, ah, li
+        print(self.dev_info_list)
 
     def update_time(self):
         self.data_view.label_time_date.setText(QDateTime.currentDateTime().toString("yyyy-MM-dd"))

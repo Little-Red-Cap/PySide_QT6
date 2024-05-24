@@ -1,9 +1,12 @@
+from PySide2.QtCore import Signal
 from PySide6.QtCore import Qt, QRect, QVariantAnimation, QPoint
 from PySide6.QtGui import QPainter, QFont, QBrush, QColor, QPen
 from PySide6.QtWidgets import QWidget
 
 
 class SwitchButton(QWidget):
+    bt_changed = Signal(bool)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setFixedSize(50, 30)
