@@ -7,6 +7,7 @@ from page_communi import *
 from page_data_analysis import *
 from page_data_view import *
 from page_manage import *
+from page_data_tab import *
 
 # from ultralytics import YOLO
 # model = YOLO('yolov8n.pt')
@@ -63,7 +64,8 @@ class MainWidget(QFrame, PartAnimation):
         self.page_communication.json_dict.connect(self.page_data_view.update_data_view)
         self.page_data_view.dev_message.connect(self.page_communication.send_data)
         self.page_manage.thresholds.connect(self.page_data_view.update_thresholds)
-        self.open_tab.connect(lambda : print("open tab"))
+        self.page_data_tab = PageDataTab()
+        self.open_tab.connect(lambda: self.page_data_tab.show())
         layout = QHBoxLayout(self)
         layout.setSpacing(0)
         layout.setContentsMargins(3, 0, 0, 0)
@@ -78,7 +80,7 @@ class MainWidget(QFrame, PartAnimation):
         self.show_event_flag = False
 
     def keyPressEvent(self, event: QKeyEvent):
-        if event.key() == Qt.Key_F10
+        if event.key() == Qt.Key_F10:
             self.is_on_top = not self.is_on_top
             self.setWindowFlag(Qt.WindowStaysOnTopHint, self.is_on_top)
             self.show()
