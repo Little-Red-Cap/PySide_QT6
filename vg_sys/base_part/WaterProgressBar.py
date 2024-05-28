@@ -1,7 +1,9 @@
 from math import sin
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
+from PySide6.QtGui import QPainter
 from PySide6.QtCore import *
+from PySide6.QtCore import Qt
 
 
 class WaterProgressBar(QWidget):

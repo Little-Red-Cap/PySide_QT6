@@ -1,3 +1,7 @@
+from PySide6.QtWidgets import *
+from PySide6.QtGui import *
+from PySide6.QtCore import *
+from PySide6.QtCore import Qt
 
 
 class DropArea(QLabel):
@@ -35,3 +39,13 @@ class DropArea(QLabel):
                     pixmap = QPixmap.fromImage(image)
                     self.setPixmap(pixmap)
         event.acceptProposedAction()
+
+
+def test_drop_area():
+    app = QApplication()
+    widget = DropArea()
+    widget.show()
+    app.exec()
+
+
+test_drop_area()
