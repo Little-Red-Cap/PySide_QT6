@@ -30,3 +30,10 @@ vg_sys/PySide6打包与部署.md
 vg_sys/images/*
 vg_sys/YOLOv8/*
 vg_sys/yolov8n.pt
+/vg_sys/base_part/__pycache__
+/WidgetsDemo/base/__pycache__
+WidgetsDemo/parts/*.png
+WidgetsDemo/parts/*.jpg
+/output
+vg_sys/*.db
+/WidgetsDemo/parts/__pycache__
