@@ -2,7 +2,7 @@ import requests
 import tkinter as tk
 from tkinter import messagebox
 
-API_KEY = '7dad7462bab24329ba6bf1c81aee4971'  # 用您自己的Weatherbit API密钥替换
+API_KEY = 'YOUR_API_KEY'  # 用您自己的Weatherbit API密钥替换
 
 
 # 获取天气数据
